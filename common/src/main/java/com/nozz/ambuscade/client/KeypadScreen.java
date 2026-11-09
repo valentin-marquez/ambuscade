@@ -2,6 +2,8 @@ package com.nozz.ambuscade.client;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_0;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_9;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 
 import com.nozz.ambuscade.block.Keypad;
@@ -21,6 +23,7 @@ public final class KeypadScreen extends Screen {
 
     private final Keypad.Open data;
     private String code = "";
+    private int echo = -1;   // the digit a numpad key already typed: with Num Lock on, it also arrives as a character
 
     public KeypadScreen(Keypad.Open data) {
         super(Component.translatable("item.ambuscade.keypad_lock"));
@@ -64,7 +67,8 @@ public final class KeypadScreen extends Screen {
     public boolean charTyped(CharacterEvent event) {
         int c = event.codepoint();
         if (c >= '0' && c <= '9') {
-            press(Character.toString(c));
+            if (c != echo) press(Character.toString(c));
+            echo = -1;
             return true;
         }
         return super.charTyped(event);
@@ -72,7 +76,14 @@ public final class KeypadScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        switch (event.key()) {
+        echo = -1;
+        int key = event.key();
+        if (key >= GLFW_KEY_KP_0 && key <= GLFW_KEY_KP_9) {   // the numpad, with or without Num Lock
+            echo = '0' + key - GLFW_KEY_KP_0;
+            press(Character.toString(echo));
+            return true;
+        }
+        switch (key) {
             case GLFW_KEY_BACKSPACE -> press("<");
             case GLFW_KEY_ENTER, GLFW_KEY_KP_ENTER -> press("OK");
             default -> {
