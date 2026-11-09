@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 
-/** A locked door's keypad: the server opens it, the client sends back a code to try or, for the owner, to set. */
+/** A keypad on a door or chest: the server opens it, the client sends back a code to try or, for the owner, to set. */
 public final class Keypad {
     public static final int MIN_DIGITS = 4, MAX_DIGITS = 8;
 
@@ -43,46 +43,61 @@ public final class Keypad {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, Submit.TYPE, Submit.CODEC, (msg, ctx) -> ctx.queue(() -> {
             if (!(ctx.getPlayer() instanceof ServerPlayer player) || !(player.level() instanceof ServerLevel level)) return;
             if (!player.blockPosition().closerThan(msg.door(), 8) || !valid(msg.code())) return;
-            if (!(level.getBlockEntity(msg.door()) instanceof KeypadDoorBlockEntity door)) return;
-            submit(level, player, door, msg);
+            if (!(level.getBlockEntity(msg.door()) instanceof KeypadHolder holder)) return;
+            submit(level, player, holder, msg);
         }));
     }
 
     /** Whoever fits the lock owns it and sets the first code. */
-    public static void claim(ServerPlayer player, KeypadDoorBlockEntity door) {
-        door.setOwner(player);
-        open(player, door);
+    public static void claim(ServerPlayer player, KeypadHolder holder) {
+        holder.keypad().setOwner(player);
+        holder.keypadChanged();
+        open(player, holder);
     }
 
-    static void open(ServerPlayer player, KeypadDoorBlockEntity door) {
-        boolean owner = door.isOwner(player);
-        long locked = door.lockedFor(player.level().getGameTime());
-        if (!door.hasCode() && !owner) {
+    /** An ownerless keypad (e.g. from /setblock) is claimed by the first player who uses it. */
+    static boolean isOwner(KeypadHolder holder, ServerPlayer player) {
+        if (!holder.keypad().hasOwner()) {
+            holder.keypad().setOwner(player);
+            holder.keypadChanged();
+        }
+        return holder.keypad().isOwner(player);
+    }
+
+    static void open(ServerPlayer player, KeypadHolder holder) {
+        KeypadLock lock = holder.keypad();
+        boolean owner = isOwner(holder, player);
+        long locked = lock.lockedFor(player.level().getGameTime());
+        if (!lock.hasCode() && !owner) {
             player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.not_set"));
         } else if (locked > 0 && !owner) {
             player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.locked", (locked + 19) / 20));
         } else {
-            NetworkManager.sendToPlayer(player, new Open(door.getBlockPos(), !door.hasCode() || owner && player.isShiftKeyDown()));
+            NetworkManager.sendToPlayer(player, new Open(holder.getBlockPos(), !lock.hasCode() || owner && player.isShiftKeyDown()));
         }
     }
 
-    private static void submit(ServerLevel level, ServerPlayer player, KeypadDoorBlockEntity door, Submit msg) {
-        BlockPos pos = door.getBlockPos();
+    private static void submit(ServerLevel level, ServerPlayer player, KeypadHolder holder, Submit msg) {
+        BlockPos pos = holder.getBlockPos();
+        KeypadLock lock = holder.keypad();
         if (msg.setting()) {
-            if (!door.isOwner(player)) return;
-            door.setCode(msg.code());
+            if (!isOwner(holder, player)) return;
+            lock.setCode(msg.code());
+            holder.keypadChanged();
             level.playSound(null, pos, SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.BLOCKS, 0.8F, 1.6F);
             player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.set"));
             return;
         }
         long now = level.getGameTime();
-        if (door.lockedFor(now) > 0 && !door.isOwner(player)) return;
-        if (door.tryCode(msg.code(), now) && door.getBlockState().getBlock() instanceof KeypadDoorBlock block) {
+        if (lock.lockedFor(now) > 0 && !isOwner(holder, player)) return;
+        boolean right = lock.tryCode(msg.code(), now);
+        holder.keypadChanged();
+        if (right) {
             level.playSound(null, pos, SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.BLOCKS, 0.8F, 1.4F);
-            block.unlock(level, pos, player);
+            holder.unlock(level, player);
         } else {
             level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BASS.value(), SoundSource.BLOCKS, 1.0F, 0.5F);
-            long locked = door.lockedFor(now);
+            long locked = lock.lockedFor(now);
             player.sendOverlayMessage(locked > 0
                     ? Component.translatable("message.ambuscade.keypad.locked", (locked + 19) / 20)
                     : Component.translatable("message.ambuscade.keypad.wrong"));

@@ -12,6 +12,8 @@ import com.nozz.ambuscade.block.MortarBlock;
 import com.nozz.ambuscade.block.MortarBlockEntity;
 import com.nozz.ambuscade.block.KeypadDoorBlock;
 import com.nozz.ambuscade.block.KeypadDoorBlockEntity;
+import com.nozz.ambuscade.block.LockedChestBlock;
+import com.nozz.ambuscade.block.LockedChestBlockEntity;
 import com.nozz.ambuscade.block.SentryBlock;
 import com.nozz.ambuscade.block.SentryBlockEntity;
 import com.nozz.ambuscade.block.SentryTier;
@@ -127,6 +129,13 @@ public final class AmbuscadeRegistry {
             () -> new KeypadLockItem(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id("keypad_lock")))));
     public static final RegistrySupplier<BlockEntityType<KeypadDoorBlockEntity>> KEYPAD_DOOR_ENTITY = BLOCK_ENTITIES.register("keypad_door",
             () -> Platform.blockEntityType(KeypadDoorBlockEntity::new, LOCKED_DOORS.values().stream().map(RegistrySupplier::get).toArray(Block[]::new)));
+
+    /** What a keypad lock turns a vanilla chest into. It has no item: breaking it gives back the chest and the lock. */
+    public static final RegistrySupplier<LockedChestBlock> LOCKED_CHEST = BLOCKS.register("locked_chest", () -> new LockedChestBlock(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST).setId(ResourceKey.create(Registries.BLOCK, Ambuscade.id("locked_chest")))
+                    .explosionResistance(1200.0F).pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK)));
+    public static final RegistrySupplier<BlockEntityType<LockedChestBlockEntity>> LOCKED_CHEST_ENTITY = BLOCK_ENTITIES.register("locked_chest",
+            () -> Platform.blockEntityType(LockedChestBlockEntity::new, LOCKED_CHEST.get()));
 
     public static final RegistrySupplier<BlockEntityType<BearTrapBlockEntity>> BEAR_TRAP_ENTITY = BLOCK_ENTITIES.register("bear_trap",
             () -> Platform.blockEntityType(BearTrapBlockEntity::new, BEAR_TRAP.get()));

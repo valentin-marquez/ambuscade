@@ -73,7 +73,7 @@
   "message.ambuscade.keypad.not_set": "El teclado aún no tiene código; solo su dueño puede fijarlo",
   "message.ambuscade.keypad.locked": "Teclado bloqueado durante %s s",
   "message.ambuscade.keypad.wrong": "Código incorrecto",
-  "message.ambuscade.keypad.set": "Código guardado. Agáchate y usa la puerta para cambiarlo",
+  "message.ambuscade.keypad.set": "Código guardado. Agáchate y usa el teclado para cambiarlo",
   "block.ambuscade.locked_acacia_door": "Puerta de acacia con teclado",
   "block.ambuscade.locked_bamboo_door": "Puerta de bambú con teclado",
   "block.ambuscade.locked_birch_door": "Puerta de abedul con teclado",
@@ -95,5 +95,6 @@
   "block.ambuscade.locked_waxed_oxidized_copper_door": "Puerta de cobre oxidado encerado con teclado",
   "block.ambuscade.locked_waxed_weathered_copper_door": "Puerta de cobre degradado encerado con teclado",
   "block.ambuscade.locked_weathered_copper_door": "Puerta de cobre degradado con teclado",
-  "item.ambuscade.keypad_lock": "Cerradura con teclado"
+  "item.ambuscade.keypad_lock": "Cerradura con teclado",
+  "block.ambuscade.locked_chest": "Cofre con teclado"
 }

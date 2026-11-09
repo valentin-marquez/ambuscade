@@ -20,6 +20,7 @@ public final class AmbuscadeNeoForgeClient {
             event.registerBlockEntityRenderer(AmbuscadeRegistry.SENTRY_ENTITY.get(), AimedRenderer::new);
             event.registerBlockEntityRenderer(AmbuscadeRegistry.MORTAR_ENTITY.get(), AimedRenderer::new);
             event.registerBlockEntityRenderer(AmbuscadeRegistry.LANDMINE_ENTITY.get(), LandmineRenderer::new);
+            event.registerBlockEntityRenderer(AmbuscadeRegistry.LOCKED_CHEST_ENTITY.get(), com.nozz.ambuscade.client.LockedChestRenderer::new);
             event.registerEntityRenderer(AmbuscadeRegistry.MORTAR_SHELL.get(), MortarShellRenderer::new);
             event.registerEntityRenderer(AmbuscadeRegistry.STEEL_BOLT.get(), SteelBoltRenderer::new);
         });

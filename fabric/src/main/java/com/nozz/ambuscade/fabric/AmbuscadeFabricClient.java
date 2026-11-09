@@ -17,6 +17,7 @@ public final class AmbuscadeFabricClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(AmbuscadeRegistry.SENTRY_ENTITY.get(), AimedRenderer::new);
         BlockEntityRendererRegistry.register(AmbuscadeRegistry.MORTAR_ENTITY.get(), AimedRenderer::new);
         BlockEntityRendererRegistry.register(AmbuscadeRegistry.LANDMINE_ENTITY.get(), LandmineRenderer::new);
+        BlockEntityRendererRegistry.register(AmbuscadeRegistry.LOCKED_CHEST_ENTITY.get(), com.nozz.ambuscade.client.LockedChestRenderer::new);
         EntityRendererRegistry.register(AmbuscadeRegistry.MORTAR_SHELL, MortarShellRenderer::new);
         EntityRendererRegistry.register(AmbuscadeRegistry.STEEL_BOLT, SteelBoltRenderer::new);
         AmbuscadeClient.init();

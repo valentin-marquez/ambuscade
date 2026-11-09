@@ -62,7 +62,10 @@ public class KeypadDoorBlock extends DoorBlock implements EntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
-        if (placer instanceof Player player && level.getBlockEntity(pos) instanceof KeypadDoorBlockEntity door) door.setOwner(player);
+        if (placer instanceof Player player && level.getBlockEntity(pos) instanceof KeypadDoorBlockEntity door) {
+            door.keypad().setOwner(player);
+            door.keypadChanged();
+        }
     }
 
     /** Mining the floor under it must not knock it loose. */
@@ -73,7 +76,7 @@ public class KeypadDoorBlock extends DoorBlock implements EntityBlock {
 
     @Override
     protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        if (level.getBlockEntity(lower(state, pos)) instanceof KeypadDoorBlockEntity door && !door.ownedBy(player)) return 0.0F;
+        if (level.getBlockEntity(lower(state, pos)) instanceof KeypadDoorBlockEntity door && !door.keypad().ownedBy(player)) return 0.0F;
         return super.getDestroyProgress(state, player, level, pos);
     }
 

@@ -73,7 +73,7 @@
   "message.ambuscade.keypad.not_set": "The keypad has no code yet; only its owner can set one",
   "message.ambuscade.keypad.locked": "Keypad locked for %s s",
   "message.ambuscade.keypad.wrong": "Wrong code",
-  "message.ambuscade.keypad.set": "Code saved. Sneak and use the door to change it",
+  "message.ambuscade.keypad.set": "Code saved. Sneak and use the keypad to change it",
   "block.ambuscade.locked_acacia_door": "Acacia Door with Keypad",
   "block.ambuscade.locked_bamboo_door": "Bamboo Door with Keypad",
   "block.ambuscade.locked_birch_door": "Birch Door with Keypad",
@@ -95,5 +95,6 @@
   "block.ambuscade.locked_waxed_oxidized_copper_door": "Waxed Oxidized Copper Door with Keypad",
   "block.ambuscade.locked_waxed_weathered_copper_door": "Waxed Weathered Copper Door with Keypad",
   "block.ambuscade.locked_weathered_copper_door": "Weathered Copper Door with Keypad",
-  "item.ambuscade.keypad_lock": "Keypad Lock"
+  "item.ambuscade.keypad_lock": "Keypad Lock",
+  "block.ambuscade.locked_chest": "Chest with Keypad"
 }
