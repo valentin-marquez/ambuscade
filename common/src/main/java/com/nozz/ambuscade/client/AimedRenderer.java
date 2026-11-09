@@ -48,8 +48,9 @@ public class AimedRenderer<T extends BlockEntity & GeoBlockEntity & Aimed> exten
     public void adjustModelBonesForRender(RenderPassInfo info, BoneSnapshots snapshots) {
         float yaw = (Float) info.getOrDefaultGeckolibData(YAW, 0F) * Mth.DEG_TO_RAD;
         float pitch = (Float) info.getOrDefaultGeckolibData(PITCH, 0F) * Mth.DEG_TO_RAD;
-        // GeckoLib draws the model facing south and turns bones the Bedrock way round (Y mirrored)
-        snapshots.ifPresent("yaw", bone -> bone.setRotY(bone.getRotY() - yaw + Mth.PI));
+        // the model faces north at rest, and a bone's Y rotation reads the same way as our yaw (atan2(-dx, -dz)):
+        // checked against targets on all eight compass points; "PI - yaw" only agreed with it due east and west
+        snapshots.ifPresent("yaw", bone -> bone.setRotY(bone.getRotY() + yaw));
         snapshots.ifPresent("pitch", bone -> bone.setRotX(bone.getRotX() + pitch));
     }
 

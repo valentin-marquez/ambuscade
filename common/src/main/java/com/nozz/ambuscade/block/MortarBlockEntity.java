@@ -118,14 +118,16 @@ public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, Le
             return;
         }
         readyAt = level.getGameTime() + RELOAD;
-        double a = level.getRandom().nextDouble() * Math.PI * 2, r = Math.sqrt(level.getRandom().nextDouble()) * SCATTER;
+        Vec3 aim = spotOf(target).subtract(muzzle());
+        double near = Math.min(1, Math.sqrt(aim.x * aim.x + aim.z * aim.z) / 8);   // close shots scatter less, so they never drop on the mortar
+        double a = level.getRandom().nextDouble() * Math.PI * 2, r = Math.sqrt(level.getRandom().nextDouble()) * SCATTER * near;
         Vec3 spot = spotOf(target).add(Math.cos(a) * r, 0, Math.sin(a) * r);
         Vec3 from = muzzle(), d = spot.subtract(from);
         double flat = Math.sqrt(d.x * d.x + d.z * d.z), e = Math.toRadians(Ballistics.elevation(flat));
         float speed = Ballistics.speed(flat, d.y);
         if (Float.isNaN(speed)) return;
         Vec3 dir = new Vec3(d.x / flat * Math.cos(e), Math.sin(e), d.z / flat * Math.cos(e));
-        MortarShell shell = new MortarShell(level, from.add(dir.scale(0.8)), owner.copy(), spot);
+        MortarShell shell = new MortarShell(level, from.add(dir.scale(Ballistics.LAUNCH)), owner.copy(), spot);
         shell.shoot(dir.x, dir.y, dir.z, speed, 0);
         level.addFreshEntity(shell);
         level.playSound(null, worldPosition, SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 2.0F, 0.5F);

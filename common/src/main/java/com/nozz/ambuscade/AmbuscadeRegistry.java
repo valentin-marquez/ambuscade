@@ -87,7 +87,7 @@ public final class AmbuscadeRegistry {
             .noOcclusion().strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)
             .setId(ResourceKey.create(Registries.BLOCK, Ambuscade.id("sentry")))));
     public static final RegistrySupplier<SentryItem> SENTRY_ITEM = ITEMS.register("sentry", () -> new SentryItem(SENTRY.get(),
-            new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id("sentry"))).useBlockDescriptionPrefix()));
+            new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id("sentry"))).useBlockDescriptionPrefix().stacksTo(1)));
     public static final RegistrySupplier<UpgradeModuleItem> UPGRADE_MODULE = ITEMS.register("upgrade_module", () -> new UpgradeModuleItem(
             new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id("upgrade_module"))).component(UPGRADE.get(), SentryUpgrade.GOLD)));
     public static final RegistrySupplier<EntityType<SteelBolt>> STEEL_BOLT = ENTITIES.register("steel_bolt", () -> EntityType.Builder
@@ -177,8 +177,10 @@ public final class AmbuscadeRegistry {
 
     private static <B extends Block> RegistrySupplier<B> block(String name, Function<BlockBehaviour.Properties, B> factory, BlockBehaviour.Properties props) {
         RegistrySupplier<B> block = BLOCKS.register(name, () -> factory.apply(props.setId(ResourceKey.create(Registries.BLOCK, Ambuscade.id(name)))));
-        ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id(name))).useBlockDescriptionPrefix()));
+        ITEMS.register(name, () -> {
+            Item.Properties item = new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Ambuscade.id(name))).useBlockDescriptionPrefix();
+            return new BlockItem(block.get(), name.equals("mortar") ? item.stacksTo(1) : item);   // carried in both arms, one at a time, like the sentry
+        });
         return block;
     }
 }

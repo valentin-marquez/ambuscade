@@ -3,16 +3,18 @@ package com.nozz.ambuscade.block;
 /** Arrow physics (drag 0.99, gravity 0.05 per tick). The elevation is picked from the distance so the tube visibly
  *  leans toward its target; the shell speed is then solved to land on the spot. */
 public final class Ballistics {
-    public static final double MIN_RANGE = 6, MAX_RANGE = 32;
+    public static final double MIN_RANGE = 2, MAX_RANGE = 32;   // 2: the shell still lands clear of the mortar itself
     private static final float NEAR_ELEVATION = 70, FAR_ELEVATION = 50, MAX_SPEED = 3;
     private static final int MAX_TICKS = 400;
+    /** The shell is spawned this far out along the tube, so the flight is solved from there, not from the muzzle. */
+    public static final double LAUNCH = 0.8;
 
     private Ballistics() {
     }
 
     /** Horizontal distance at which a shell comes back down through height dy; NaN if it never does. */
     static double landing(double elevation, double speed, double dy) {
-        double a = Math.toRadians(elevation), x = 0, y = 0, vx = speed * Math.cos(a), vy = speed * Math.sin(a);
+        double a = Math.toRadians(elevation), x = LAUNCH * Math.cos(a), y = LAUNCH * Math.sin(a), vx = speed * Math.cos(a), vy = speed * Math.sin(a);
         for (int t = 0; t < MAX_TICKS; t++) {
             x += vx;
             y += vy;

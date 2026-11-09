@@ -39,6 +39,7 @@ public class BarbedWireBlock extends Block {
             Direction.NORTH, BlockStateProperties.NORTH, Direction.EAST, BlockStateProperties.EAST,
             Direction.SOUTH, BlockStateProperties.SOUTH, Direction.WEST, BlockStateProperties.WEST);
 
+    private static final float DAMAGE = 2.0F;   // per hit while moving, through armor: crossing one block costs about a heart and a half
     private static final VoxelShape POST_SHAPE = Block.box(6, 0, 6, 10, 16, 10);
     private static final Map<Direction, VoxelShape> SIDE_SHAPES = Map.of(
             Direction.NORTH, Block.box(7, 0, 0, 9, 15, 8), Direction.SOUTH, Block.box(7, 0, 8, 9, 15, 16),
@@ -114,8 +115,12 @@ public class BarbedWireBlock extends Block {
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effects, boolean intersects) {
         if (!(entity instanceof LivingEntity living)) return;
         entity.makeStuckInBlock(state, new Vec3(0.45, 0.75, 0.45));
-        if (level instanceof ServerLevel server && entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6) {
-            living.hurtServer(server, Ambuscade.damage(server, Ambuscade.BARBED_WIRE_DAMAGE), 1.0F);
+        if (!(level instanceof ServerLevel server)) return;
+        // players move on their own client, so the server's delta movement says nothing once a hit has settled it:
+        // measure the step actually taken, the way sweet berry bushes do
+        Vec3 step = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
+        if (Math.abs(step.x) >= 0.003 || Math.abs(step.z) >= 0.003) {
+            living.hurtServer(server, Ambuscade.damage(server, Ambuscade.BARBED_WIRE_DAMAGE), DAMAGE);
         }
     }
 }
