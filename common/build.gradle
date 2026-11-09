@@ -1,0 +1,26 @@
+architectury {
+    common rootProject.enabled_platforms.split(',')
+}
+
+dependencies {
+    implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+    implementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    // common code compiles against the fabric GeckoLib jar; its API is loader-neutral
+    compileOnly "maven.modrinth:geckolib:$rootProject.geckolib_fabric"
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:5.10.2")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// the dev harness stays out of git and out of release jars; pass -Pambuscade.harness to build it in
+if (project.hasProperty("ambuscade.harness") && file("src/harness").exists()) {
+    sourceSets.main.java.srcDir "src/harness/java"
+    sourceSets.test.java.srcDir "src/harness/test"
+}

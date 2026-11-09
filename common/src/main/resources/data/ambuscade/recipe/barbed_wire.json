@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"building","pattern":["N N","NLN","N N"],"key":{"N":"minecraft:iron_nugget","L":"minecraft:pale_oak_log"},"result":{"id":"ambuscade:barbed_wire","count":4}}

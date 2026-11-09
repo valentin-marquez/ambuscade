@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "DAD",
+    "ACA",
+    "DAD"
+  ],
+  "key": {
+    "D": "minecraft:diamond_block",
+    "A": "minecraft:arrow",
+    "C": "minecraft:comparator"
+  },
+  "result": {
+    "id": "ambuscade:upgrade_module",
+    "count": 1,
+    "components": {
+      "ambuscade:upgrade": "endless"
+    }
+  }
+}

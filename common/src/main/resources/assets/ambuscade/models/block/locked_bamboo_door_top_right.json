@@ -1,0 +1,7 @@
+{
+  "parent": "ambuscade:block/keypad_door_top_right",
+  "textures": {
+    "bottom": "minecraft:block/bamboo_door_bottom",
+    "top": "minecraft:block/bamboo_door_top"
+  }
+}

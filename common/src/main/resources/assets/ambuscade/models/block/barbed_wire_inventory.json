@@ -1,0 +1,1148 @@
+{
+  "texture_size": [
+    32,
+    32
+  ],
+  "textures": {
+    "wire": "ambuscade:block/barbed_wire",
+    "particle": "minecraft:block/pale_oak_log",
+    "post": "minecraft:block/pale_oak_log",
+    "post_top": "minecraft:block/pale_oak_log_top"
+  },
+  "elements": [
+    {
+      "name": "post",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        }
+      }
+    },
+    {
+      "name": "foot",
+      "from": [
+        5.5,
+        0,
+        5.5
+      ],
+      "to": [
+        10.5,
+        1,
+        10.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            8,
+            1.5,
+            13,
+            6.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "top",
+      "from": [
+        5.5,
+        15,
+        5.5
+      ],
+      "to": [
+        10.5,
+        16,
+        10.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            13,
+            1
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            8,
+            1.5,
+            13,
+            6.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            8,
+            1.5,
+            13,
+            6.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "anchor_0",
+      "from": [
+        9.875,
+        0.75,
+        7
+      ],
+      "to": [
+        10.25,
+        2.25,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            4,
+            4,
+            6,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "north": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_00",
+      "from": [
+        10,
+        1.25,
+        7.75
+      ],
+      "to": [
+        12.5,
+        1.75,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_01",
+      "from": [
+        12.5,
+        1.0,
+        7.75
+      ],
+      "to": [
+        14,
+        1.5,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "west": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_02",
+      "from": [
+        14,
+        0.75,
+        7.75
+      ],
+      "to": [
+        16,
+        1.25,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "west": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "barb_0a",
+      "from": [
+        11.5,
+        -0.25,
+        8
+      ],
+      "to": [
+        14.5,
+        2.75,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": 22.5,
+        "axis": "x",
+        "origin": [
+          13,
+          1.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "barb_0b",
+      "from": [
+        11.5,
+        -0.25,
+        8
+      ],
+      "to": [
+        14.5,
+        2.75,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          13,
+          1.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "anchor_1",
+      "from": [
+        9.875,
+        4.75,
+        7
+      ],
+      "to": [
+        10.25,
+        6.25,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            4,
+            4,
+            6,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "north": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_10",
+      "from": [
+        10,
+        5.25,
+        7.75
+      ],
+      "to": [
+        16,
+        5.75,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "barb_1a",
+      "from": [
+        12.0,
+        4.0,
+        8
+      ],
+      "to": [
+        15.0,
+        7.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": 22.5,
+        "axis": "x",
+        "origin": [
+          13.5,
+          5.5,
+          8
+        ]
+      }
+    },
+    {
+      "name": "barb_1b",
+      "from": [
+        12.0,
+        4.0,
+        8
+      ],
+      "to": [
+        15.0,
+        7.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          13.5,
+          5.5,
+          8
+        ]
+      }
+    },
+    {
+      "name": "anchor_2",
+      "from": [
+        9.875,
+        8.75,
+        7
+      ],
+      "to": [
+        10.25,
+        10.25,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            4,
+            4,
+            6,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "north": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_20",
+      "from": [
+        10,
+        9.25,
+        7.75
+      ],
+      "to": [
+        16,
+        9.75,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "barb_2a",
+      "from": [
+        11.25,
+        8.0,
+        8
+      ],
+      "to": [
+        14.25,
+        11.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": 22.5,
+        "axis": "x",
+        "origin": [
+          12.75,
+          9.5,
+          8
+        ]
+      }
+    },
+    {
+      "name": "barb_2b",
+      "from": [
+        11.25,
+        8.0,
+        8
+      ],
+      "to": [
+        14.25,
+        11.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          12.75,
+          9.5,
+          8
+        ]
+      }
+    },
+    {
+      "name": "anchor_3",
+      "from": [
+        9.875,
+        12.75,
+        7
+      ],
+      "to": [
+        10.25,
+        14.25,
+        9
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            4,
+            4,
+            6,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "north": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "wire_30",
+      "from": [
+        10,
+        13.25,
+        7.75
+      ],
+      "to": [
+        16,
+        13.75,
+        8.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            14,
+            0,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            6,
+            14.5
+          ],
+          "texture": "#wire"
+        },
+        "down": {
+          "uv": [
+            0,
+            14.5,
+            6,
+            15
+          ],
+          "texture": "#wire"
+        },
+        "east": {
+          "uv": [
+            8,
+            14,
+            8.5,
+            14.5
+          ],
+          "texture": "#wire"
+        }
+      }
+    },
+    {
+      "name": "barb_3a",
+      "from": [
+        11.75,
+        12.0,
+        8
+      ],
+      "to": [
+        14.75,
+        15.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": 22.5,
+        "axis": "x",
+        "origin": [
+          13.25,
+          13.5,
+          8
+        ]
+      }
+    },
+    {
+      "name": "barb_3b",
+      "from": [
+        11.75,
+        12.0,
+        8
+      ],
+      "to": [
+        14.75,
+        15.0,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            13,
+            3
+          ],
+          "texture": "#wire"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            16,
+            3
+          ],
+          "texture": "#wire"
+        }
+      },
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          13.25,
+          13.5,
+          8
+        ]
+      }
+    }
+  ]
+}

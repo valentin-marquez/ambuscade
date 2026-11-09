@@ -1,0 +1,65 @@
+{
+  "texture_size": [
+    32,
+    32
+  ],
+  "textures": {
+    "wire": "ambuscade:block/barbed_wire",
+    "particle": "minecraft:block/pale_oak_log",
+    "post": "minecraft:block/pale_oak_log",
+    "post_top": "minecraft:block/pale_oak_log_top"
+  },
+  "elements": [
+    {
+      "name": "post",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#post"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+{
+  "display": {
+    "gui": {
+      "rotation": [
+        60,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.85,
+        0.85,
+        0.85
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -90,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        -3
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        20,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "texture_size": [
+    32,
+    32
+  ],
+  "textures": {
+    "t": "ambuscade:block/gas_mine",
+    "particle": "ambuscade:block/gas_mine"
+  },
+  "elements": [
+    {
+      "name": "ground",
+      "from": [
+        2,
+        0.02,
+        2
+      ],
+      "to": [
+        14,
+        0.02,
+        14
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "hub",
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        0.75,
+        10
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            1,
+            1,
+            5,
+            5
+          ],
+          "texture": "#t"
+        },
+        "north": {
+          "uv": [
+            1,
+            0,
+            5,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            1,
+            0,
+            5,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            1,
+            0,
+            5,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            1,
+            0,
+            5,
+            0.75
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "canister",
+      "from": [
+        7,
+        0.25,
+        7
+      ],
+      "to": [
+        9,
+        3.75,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            8,
+            6,
+            11.5
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            4,
+            8,
+            6,
+            11.5
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            4,
+            8,
+            6,
+            11.5
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            4,
+            8,
+            6,
+            11.5
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            6,
+            8,
+            8,
+            10
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            6,
+            8,
+            8,
+            10
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "valve",
+      "from": [
+        7.5,
+        3.75,
+        7.5
+      ],
+      "to": [
+        8.5,
+        4.5,
+        8.5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "north": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "prong_e_x",
+      "from": [
+        6.25,
+        0.25,
+        8
+      ],
+      "to": [
+        9.75,
+        4.25,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prong_e_z",
+      "from": [
+        8,
+        0.25,
+        6.25
+      ],
+      "to": [
+        8,
+        4.25,
+        9.75
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prong_e_tip",
+      "from": [
+        7.5,
+        4.25,
+        7.5
+      ],
+      "to": [
+        8.5,
+        5.0,
+        8.5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "north": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": -45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prong_w_x",
+      "from": [
+        6.25,
+        0.25,
+        8
+      ],
+      "to": [
+        9.75,
+        4.25,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": 45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prong_w_z",
+      "from": [
+        8,
+        0.25,
+        6.25
+      ],
+      "to": [
+        8,
+        4.25,
+        9.75
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            0,
+            8,
+            3.5,
+            13
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": 45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    },
+    {
+      "name": "prong_w_tip",
+      "from": [
+        7.5,
+        4.25,
+        7.5
+      ],
+      "to": [
+        8.5,
+        5.0,
+        8.5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            5,
+            1,
+            7,
+            3
+          ],
+          "texture": "#t"
+        },
+        "north": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            5,
+            0,
+            7,
+            0.75
+          ],
+          "texture": "#t"
+        }
+      },
+      "rotation": {
+        "angle": 45,
+        "axis": "z",
+        "origin": [
+          8,
+          0.25,
+          8
+        ]
+      }
+    }
+  ]
+}

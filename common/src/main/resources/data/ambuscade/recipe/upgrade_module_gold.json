@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " T ",
+    "SCS",
+    " S "
+  ],
+  "key": {
+    "T": "minecraft:gold_ingot",
+    "S": "minecraft:gold_ingot",
+    "C": "minecraft:comparator"
+  },
+  "result": {
+    "id": "ambuscade:upgrade_module",
+    "count": 1
+  }
+}

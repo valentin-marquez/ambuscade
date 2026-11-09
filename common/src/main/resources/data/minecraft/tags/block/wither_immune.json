@@ -1,0 +1,25 @@
+{
+  "values": [
+    "ambuscade:locked_acacia_door",
+    "ambuscade:locked_bamboo_door",
+    "ambuscade:locked_birch_door",
+    "ambuscade:locked_cherry_door",
+    "ambuscade:locked_copper_door",
+    "ambuscade:locked_crimson_door",
+    "ambuscade:locked_dark_oak_door",
+    "ambuscade:locked_exposed_copper_door",
+    "ambuscade:locked_iron_door",
+    "ambuscade:locked_jungle_door",
+    "ambuscade:locked_mangrove_door",
+    "ambuscade:locked_oak_door",
+    "ambuscade:locked_oxidized_copper_door",
+    "ambuscade:locked_pale_oak_door",
+    "ambuscade:locked_spruce_door",
+    "ambuscade:locked_warped_door",
+    "ambuscade:locked_waxed_copper_door",
+    "ambuscade:locked_waxed_exposed_copper_door",
+    "ambuscade:locked_waxed_oxidized_copper_door",
+    "ambuscade:locked_waxed_weathered_copper_door",
+    "ambuscade:locked_weathered_copper_door"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "ambuscade",
+  "version": "${version}",
+  "name": "Ambuscade",
+  "description": "Base-defense traps that know who placed them.",
+  "authors": ["nozz"],
+  "license": "ARR",
+  "icon": "assets/ambuscade/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.nozz.ambuscade.fabric.AmbuscadeFabric"],
+    "client": ["com.nozz.ambuscade.fabric.AmbuscadeFabricClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.0",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "architectury": ">=20.1.0",
+    "fabric-api": "*",
+    "geckolib": ">=5.5.0"
+  },
+  "mixins": ["ambuscade.mixins.json"]
+}

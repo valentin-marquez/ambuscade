@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " T ",
+    "SCS",
+    " S "
+  ],
+  "key": {
+    "T": "minecraft:diamond",
+    "S": "minecraft:diamond",
+    "C": "minecraft:comparator"
+  },
+  "result": {
+    "id": "ambuscade:upgrade_module",
+    "count": 1,
+    "components": {
+      "ambuscade:upgrade": "diamond"
+    }
+  }
+}

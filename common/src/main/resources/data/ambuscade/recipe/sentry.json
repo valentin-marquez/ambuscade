@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ICI",
+    "IDI",
+    "I I"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:crossbow",
+    "D": "minecraft:dispenser"
+  },
+  "result": {
+    "id": "ambuscade:sentry",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SLS",
+    "LSL",
+    "SLS"
+  ],
+  "key": {
+    "S": "minecraft:string",
+    "L": "#minecraft:leaves"
+  },
+  "result": {
+    "id": "ambuscade:camouflage_net",
+    "count": 2
+  }
+}

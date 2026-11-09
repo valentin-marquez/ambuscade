@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "ARR"
+
+[[mods]]
+modId = "ambuscade"
+version = "${version}"
+displayName = "Ambuscade"
+authors = "nozz"
+description = "Base-defense traps that know who placed them."
+logoFile = "assets/ambuscade/icon.png"
+
+[[dependencies.ambuscade]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ambuscade]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.1.2,26.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ambuscade]]
+modId = "architectury"
+type = "required"
+versionRange = "[20.1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ambuscade]]
+modId = "geckolib"
+type = "required"
+versionRange = "[5.5.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "ambuscade.mixins.json"

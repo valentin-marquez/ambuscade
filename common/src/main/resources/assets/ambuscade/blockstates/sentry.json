@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "tier=iron": {
+      "model": "ambuscade:block/sentry_iron"
+    },
+    "tier=gold": {
+      "model": "ambuscade:block/sentry_gold"
+    },
+    "tier=diamond": {
+      "model": "ambuscade:block/sentry_diamond"
+    },
+    "tier=netherite": {
+      "model": "ambuscade:block/sentry_netherite"
+    }
+  }
+}
