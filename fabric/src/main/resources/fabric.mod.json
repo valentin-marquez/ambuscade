@@ -5,7 +5,7 @@
   "name": "Ambuscade",
   "description": "Base-defense traps that know who placed them.",
   "authors": ["nozz"],
-  "license": "ARR",
+  "license": "All-Rights-Reserved",
   "icon": "assets/ambuscade/icon.png",
   "environment": "*",
   "entrypoints": {
