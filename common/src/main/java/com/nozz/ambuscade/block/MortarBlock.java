@@ -108,7 +108,7 @@ public class MortarBlock extends BaseEntityBlock {
                 case NO_SKY -> "message.ambuscade.mortar.no_sky";
                 default -> "message.ambuscade.mortar.aimed";
             };
-            player.sendOverlayMessage(Component.translatable(key, t.getX(), t.getY(), t.getZ()));
+            player.sendOverlayMessage(Component.translatable(key, t.getX(), t.getY(), t.getZ(), (int) Ballistics.maxRange()));
             level.playSound(null, pos, SoundEvents.CROSSBOW_LOADING_END.value(), SoundSource.BLOCKS, 1.0F, 0.6F);
         }
         return InteractionResult.SUCCESS;

@@ -22,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 /** Marks a firing spot from afar (right-click toward a block, up to 64 blocks); right-click a mortar to hand it over.
  *  Sneak-right-click clears it. */
 public class FireOrderItem extends Item {
-    private static final double REACH = 64;
+    private static final double REACH = 128;   // past the mortar's longest shot, wherever the marker stands
 
     public FireOrderItem(Properties properties) {
         super(properties);

@@ -40,7 +40,7 @@ import net.minecraft.world.phys.Vec3;
 public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, LedgerLink, Aimed {
     public static final String CONTROLLER = "main";
     private static final RawAnimation FIRE = RawAnimation.begin().thenPlay("animation.mortar.fire");
-    private static final double SCATTER = 1.5, MUZZLE_Y = 1.6;
+    private static final double MUZZLE_Y = 1.6;
     private static final int RELOAD = 40;
     private static final float TURN = 9, TILT = 4, REST_ELEVATION = 60, MODEL_ELEVATION = 45;
 
@@ -106,7 +106,7 @@ public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, Le
         if (level == null || !level.canSeeSky(worldPosition.above())) return Aim.NO_SKY;
         Vec3 d = spotOf(target).subtract(muzzle());
         double flat = Math.sqrt(d.x * d.x + d.z * d.z);
-        if (flat < Ballistics.MIN_RANGE || flat > Ballistics.MAX_RANGE || Float.isNaN(Ballistics.speed(flat, d.y))) return Aim.OUT_OF_RANGE;
+        if (flat < Ballistics.MIN_RANGE || flat > Ballistics.maxRange() || Float.isNaN(Ballistics.speed(flat, d.y))) return Aim.OUT_OF_RANGE;
         return Aim.OK;
     }
 
@@ -119,8 +119,8 @@ public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, Le
         }
         readyAt = level.getGameTime() + RELOAD;
         Vec3 aim = spotOf(target).subtract(muzzle());
-        double near = Math.min(1, Math.sqrt(aim.x * aim.x + aim.z * aim.z) / 8);   // close shots scatter less, so they never drop on the mortar
-        double a = level.getRandom().nextDouble() * Math.PI * 2, r = Math.sqrt(level.getRandom().nextDouble()) * SCATTER * near;
+        double a = level.getRandom().nextDouble() * Math.PI * 2;
+        double r = Math.sqrt(level.getRandom().nextDouble()) * Ballistics.scatter(Math.sqrt(aim.x * aim.x + aim.z * aim.z));
         Vec3 spot = spotOf(target).add(Math.cos(a) * r, 0, Math.sin(a) * r);
         Vec3 from = muzzle(), d = spot.subtract(from);
         double flat = Math.sqrt(d.x * d.x + d.z * d.z), e = Math.toRadians(Ballistics.elevation(flat));

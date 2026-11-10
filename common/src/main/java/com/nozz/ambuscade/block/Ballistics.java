@@ -3,7 +3,7 @@ package com.nozz.ambuscade.block;
 /** Arrow physics (drag 0.99, gravity 0.05 per tick). The elevation is picked from the distance so the tube visibly
  *  leans toward its target; the shell speed is then solved to land on the spot. */
 public final class Ballistics {
-    public static final double MIN_RANGE = 2, MAX_RANGE = 32;   // 2: the shell still lands clear of the mortar itself
+    public static final double MIN_RANGE = 2;   // the shell still lands clear of the mortar itself
     private static final float NEAR_ELEVATION = 70, FAR_ELEVATION = 50, MAX_SPEED = 3;
     private static final int MAX_TICKS = 400;
     /** The shell is spawned this far out along the tube, so the flight is solved from there, not from the muzzle. */
@@ -25,8 +25,20 @@ public final class Ballistics {
         return Double.NaN;
     }
 
+    public static double maxRange() {
+        return com.nozz.ambuscade.AmbuscadeConfig.mortarMaxRange;
+    }
+
+    /** How far from the marked spot a shell may land: tight up close so it never hits the mortar, 1.5 out to 32 blocks,
+     *  then widening to 4 at 96, so long shots bombard an area instead of sniping. */
+    public static double scatter(double flat) {
+        if (flat < 8) return 1.5 * flat / 8;
+        return flat <= 32 ? 1.5 : 1.5 + 2.5 * Math.min(1, (flat - 32) / 64);
+    }
+
+    // the lean follows the distance over the whole possible range, whatever cap the server sets
     public static float elevation(double flat) {
-        double f = Math.clamp((flat - MIN_RANGE) / (MAX_RANGE - MIN_RANGE), 0, 1);
+        double f = Math.clamp((flat - MIN_RANGE) / (com.nozz.ambuscade.AmbuscadeConfig.MORTAR_RANGE_LIMIT - MIN_RANGE), 0, 1);
         return (float) (NEAR_ELEVATION + (FAR_ELEVATION - NEAR_ELEVATION) * f);
     }
 

@@ -62,7 +62,7 @@
   "tooltip.ambuscade.fire_order.target": "Objetivo: %s %s %s",
   "message.ambuscade.fire_order.marked": "Objetivo marcado: %s %s %s",
   "message.ambuscade.mortar.aimed": "Mortero apuntado a %s %s %s",
-  "message.ambuscade.mortar.out_of_range": "Apuntado a %s %s %s, pero está fuera de alcance (2 a 32 bloques)",
+  "message.ambuscade.mortar.out_of_range": "Apuntado a %s %s %s, pero está fuera de alcance (2 a %4$s bloques)",
   "message.ambuscade.mortar.no_sky": "Apuntado a %s %s %s, pero necesita cielo abierto encima para disparar",
   "message.ambuscade.mortar.blank_order": "Esta orden de tiro todavía no tiene objetivo",
   "message.ambuscade.mortar.other_dimension": "Ese objetivo está en otra dimensión",

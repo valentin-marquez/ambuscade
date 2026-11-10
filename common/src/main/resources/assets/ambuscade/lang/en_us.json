@@ -62,7 +62,7 @@
   "tooltip.ambuscade.fire_order.target": "Target: %s %s %s",
   "message.ambuscade.fire_order.marked": "Target marked: %s %s %s",
   "message.ambuscade.mortar.aimed": "Mortar aimed at %s %s %s",
-  "message.ambuscade.mortar.out_of_range": "Aimed at %s %s %s, but that is out of range (2 to 32 blocks)",
+  "message.ambuscade.mortar.out_of_range": "Aimed at %s %s %s, but that is out of range (2 to %4$s blocks)",
   "message.ambuscade.mortar.no_sky": "Aimed at %s %s %s, but it needs open sky above to fire",
   "message.ambuscade.mortar.blank_order": "This fire order has no target yet",
   "message.ambuscade.mortar.other_dimension": "That target is in another dimension",

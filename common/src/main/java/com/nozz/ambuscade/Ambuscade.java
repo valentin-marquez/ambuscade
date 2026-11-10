@@ -16,6 +16,7 @@ public final class Ambuscade {
     public static final ResourceKey<DamageType> BEAR_TRAP_DAMAGE = damageType("bear_trap");
 
     public static void init() {
+        AmbuscadeConfig.load(dev.architectury.platform.Platform.getConfigFolder());
         AmbuscadeRegistry.init();
         LedgerNetwork.init();
         MineNetwork.init();

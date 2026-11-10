@@ -3,6 +3,7 @@ package com.nozz.ambuscade.entity;
 import com.nozz.ambuscade.AmbuscadeRegistry;
 import com.nozz.ambuscade.block.TrapOwner;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,6 +26,7 @@ public class MortarShell extends AbstractArrow {
     private static final DustParticleOptions MARK = new DustParticleOptions(0xE6E9F5, 1.2F);
     private TrapOwner owner;   // who it spares, copied at launch; null after a reload, which spares every creature
     private Vec3 marker;
+    private net.minecraft.world.level.ChunkPos loaded;
 
     public MortarShell(EntityType<? extends MortarShell> type, Level level) {
         super(type, level);
@@ -44,6 +46,17 @@ public class MortarShell extends AbstractArrow {
 
     @Override
     public void tick() {
+        // keep the shell's chunk simulated, so a long shot does not freeze where no player is near. The ender pearl's ticket
+        // only simulates the chunk it is placed on, and a frozen shell cannot place the next one, so the chunk it reaches two
+        // ticks ahead is claimed before it gets there. Tickets lapse 40 ticks after their last renewal: nothing stays loaded
+        if (level() instanceof ServerLevel server) {
+            net.minecraft.world.level.ChunkPos ahead = net.minecraft.world.level.ChunkPos.containing(BlockPos.containing(position().add(getDeltaMovement().scale(2))));
+            if (!ahead.equals(loaded) || tickCount % 20 == 0) {
+                server.getChunkSource().addTicketWithRadius(net.minecraft.server.level.TicketType.ENDER_PEARL, chunkPosition(), 2);
+                server.getChunkSource().addTicketWithRadius(net.minecraft.server.level.TicketType.ENDER_PEARL, ahead, 2);
+                loaded = ahead;
+            }
+        }
         super.tick();
         if (marker != null && tickCount % 3 == 0 && level() instanceof ServerLevel server) {
             // a ring with four inward ticks on the ground, so whoever is under it can run
