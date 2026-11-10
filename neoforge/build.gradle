@@ -14,6 +14,19 @@ loom {
             if (project.hasProperty("ambuscade.world")) {
                 programArgs "--quickPlaySingleplayer", project.property("ambuscade.world")
             }
+            if (project.hasProperty("ambuscade.join")) {   // multiplayer tests: -Pambuscade.join=localhost
+                programArgs "--quickPlayMultiplayer", project.property("ambuscade.join"), "--username", "Alice"
+            }
+        }
+        client2 {   // the second player for multiplayer tests, with its own folder and harness port
+            client()
+            runDir "run-client2"
+            property "ambuscade.harness.port", "25587"
+            programArgs "--quickPlayMultiplayer", "localhost", "--username", "Bob"
+        }
+        server {
+            runDir "run-server"
+            programArgs "--nogui"
         }
     }
 }
