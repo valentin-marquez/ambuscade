@@ -2,6 +2,8 @@
 
 Traps and base defence for Minecraft, on Fabric and NeoForge.
 
+![Ambuscade 0.1.0](media/banner.jpg)
+
 ## Features
 
 - **Barbed wire**: slows and hurts whatever pushes through it.
@@ -12,6 +14,16 @@ Traps and base defence for Minecraft, on Fabric and NeoForge.
 - **Camouflage net**: hides mines and bear traps.
 - **Keypad lock**: locks vanilla doors and chests behind a code.
 - **Perimeter ledger**: decides who your traps spare and who they hit.
+
+## Gallery
+
+| | |
+|---|---|
+| ![The four sentry tiers](media/sentries.jpg) | ![Netherite sentry](media/sentry.jpg) |
+| ![Mortar](media/mortar.jpg) | ![Mortar shell arc](media/mortar_arc.gif) |
+| ![Bear trap](media/bear_trap.jpg) | ![Explosive, gas and teleport mines](media/mines.jpg) |
+| ![Barbed wire](media/barbed_wire.jpg) | ![Keypad doors and chest](media/keypad.jpg) |
+| ![A mine, and one under a camouflage net](media/camouflage.jpg) | ![Perimeter ledger, fire order, keypad lock, camouflage net, upgrade module](media/items.jpg) |
 
 ## Requirements
 
