@@ -1,5 +1,5 @@
 {
-  "block.ambuscade.barbed_wire": "Alambre de púas",
+  "block.ambuscade.barbed_wire": "Alambre de púas de roble pálido",
   "block.ambuscade.bear_trap": "Trampa para osos",
   "itemGroup.ambuscade": "Ambuscade",
   "death.attack.ambuscade.barbed_wire": "%1$s se enredó en el alambre de púas",
@@ -96,5 +96,16 @@
   "block.ambuscade.locked_waxed_weathered_copper_door": "Puerta de cobre degradado encerado con teclado",
   "block.ambuscade.locked_weathered_copper_door": "Puerta de cobre degradado con teclado",
   "item.ambuscade.keypad_lock": "Cerradura con teclado",
-  "block.ambuscade.locked_chest": "Cofre con teclado"
+  "block.ambuscade.locked_chest": "Cofre con teclado",
+  "block.ambuscade.oak_barbed_wire": "Alambre de púas de roble",
+  "block.ambuscade.spruce_barbed_wire": "Alambre de púas de abeto",
+  "block.ambuscade.birch_barbed_wire": "Alambre de púas de abedul",
+  "block.ambuscade.jungle_barbed_wire": "Alambre de púas de jungla",
+  "block.ambuscade.acacia_barbed_wire": "Alambre de púas de acacia",
+  "block.ambuscade.dark_oak_barbed_wire": "Alambre de púas de roble oscuro",
+  "block.ambuscade.mangrove_barbed_wire": "Alambre de púas de mangle",
+  "block.ambuscade.cherry_barbed_wire": "Alambre de púas de cerezo",
+  "block.ambuscade.crimson_barbed_wire": "Alambre de púas de carmesí",
+  "block.ambuscade.warped_barbed_wire": "Alambre de púas de distorsionado",
+  "block.ambuscade.bamboo_barbed_wire": "Alambre de púas de bambú"
 }

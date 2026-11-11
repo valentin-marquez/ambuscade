@@ -1,0 +1,8 @@
+{
+  "parent": "ambuscade:block/barbed_wire_inventory",
+  "textures": {
+    "particle": "minecraft:block/cherry_log",
+    "post": "minecraft:block/cherry_log",
+    "post_top": "minecraft:block/cherry_log_top"
+  }
+}

@@ -1,1 +1,22 @@
-{"values": ["ambuscade:barbed_wire", "ambuscade:bear_trap", "ambuscade:explosive_mine", "ambuscade:gas_mine", "ambuscade:teleport_mine", "ambuscade:sentry", "ambuscade:mortar"]}
+{
+  "values": [
+    "ambuscade:barbed_wire",
+    "ambuscade:bear_trap",
+    "ambuscade:explosive_mine",
+    "ambuscade:gas_mine",
+    "ambuscade:teleport_mine",
+    "ambuscade:sentry",
+    "ambuscade:mortar",
+    "ambuscade:oak_barbed_wire",
+    "ambuscade:spruce_barbed_wire",
+    "ambuscade:birch_barbed_wire",
+    "ambuscade:jungle_barbed_wire",
+    "ambuscade:acacia_barbed_wire",
+    "ambuscade:dark_oak_barbed_wire",
+    "ambuscade:mangrove_barbed_wire",
+    "ambuscade:cherry_barbed_wire",
+    "ambuscade:crimson_barbed_wire",
+    "ambuscade:warped_barbed_wire",
+    "ambuscade:bamboo_barbed_wire"
+  ]
+}

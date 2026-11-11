@@ -1,5 +1,5 @@
 {
-  "block.ambuscade.barbed_wire": "Barbed Wire",
+  "block.ambuscade.barbed_wire": "Pale Oak Barbed Wire",
   "block.ambuscade.bear_trap": "Bear Trap",
   "itemGroup.ambuscade": "Ambuscade",
   "death.attack.ambuscade.barbed_wire": "%1$s got tangled in barbed wire",
@@ -96,5 +96,16 @@
   "block.ambuscade.locked_waxed_weathered_copper_door": "Waxed Weathered Copper Door with Keypad",
   "block.ambuscade.locked_weathered_copper_door": "Weathered Copper Door with Keypad",
   "item.ambuscade.keypad_lock": "Keypad Lock",
-  "block.ambuscade.locked_chest": "Chest with Keypad"
+  "block.ambuscade.locked_chest": "Chest with Keypad",
+  "block.ambuscade.oak_barbed_wire": "Oak Barbed Wire",
+  "block.ambuscade.spruce_barbed_wire": "Spruce Barbed Wire",
+  "block.ambuscade.birch_barbed_wire": "Birch Barbed Wire",
+  "block.ambuscade.jungle_barbed_wire": "Jungle Barbed Wire",
+  "block.ambuscade.acacia_barbed_wire": "Acacia Barbed Wire",
+  "block.ambuscade.dark_oak_barbed_wire": "Dark Oak Barbed Wire",
+  "block.ambuscade.mangrove_barbed_wire": "Mangrove Barbed Wire",
+  "block.ambuscade.cherry_barbed_wire": "Cherry Barbed Wire",
+  "block.ambuscade.crimson_barbed_wire": "Crimson Barbed Wire",
+  "block.ambuscade.warped_barbed_wire": "Warped Barbed Wire",
+  "block.ambuscade.bamboo_barbed_wire": "Bamboo Barbed Wire"
 }

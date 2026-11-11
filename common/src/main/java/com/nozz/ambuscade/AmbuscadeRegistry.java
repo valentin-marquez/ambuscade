@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 import java.util.function.Function;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.UUIDUtil;
@@ -63,8 +64,11 @@ public final class AmbuscadeRegistry {
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Ambuscade.MOD_ID, Registries.ENTITY_TYPE);
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Ambuscade.MOD_ID, Registries.CREATIVE_MODE_TAB);
 
-    public static final RegistrySupplier<BarbedWireBlock> BARBED_WIRE = block("barbed_wire", BarbedWireBlock::new,
-            BlockBehaviour.Properties.of().noCollision().noOcclusion().strength(2.0F, 3.0F).sound(SoundType.CHAIN));
+    public static final RegistrySupplier<BarbedWireBlock> BARBED_WIRE = barbedWire("barbed_wire");   // pale oak
+    /** The same wire on every other wood: only the log texture changes. */
+    public static final List<RegistrySupplier<BarbedWireBlock>> BARBED_WIRE_WOODS = Stream.of(
+            "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "crimson", "warped", "bamboo")
+            .map(wood -> barbedWire(wood + "_barbed_wire")).toList();
     public static final RegistrySupplier<BearTrapBlock> BEAR_TRAP = block("bear_trap", BearTrapBlock::new,
             BlockBehaviour.Properties.of().noCollision().noOcclusion().strength(3.0F, 6.0F).sound(SoundType.CHAIN));
     public static final RegistrySupplier<LandmineBlock> EXPLOSIVE_MINE = block("explosive_mine", LandmineBlock::new,
@@ -148,6 +152,7 @@ public final class AmbuscadeRegistry {
                 .icon(() -> new ItemStack(BEAR_TRAP.get()))
                 .displayItems((params, out) -> {
                     out.accept(BARBED_WIRE.get());
+                    BARBED_WIRE_WOODS.forEach(wire -> out.accept(wire.get()));
                     out.accept(BEAR_TRAP.get());
                     out.accept(EXPLOSIVE_MINE.get());
                     out.accept(GAS_MINE.get());
@@ -173,6 +178,11 @@ public final class AmbuscadeRegistry {
         BLOCK_ENTITIES.register();
         ENTITIES.register();
         TABS.register();
+    }
+
+    private static RegistrySupplier<BarbedWireBlock> barbedWire(String name) {
+        return block(name, BarbedWireBlock::new,
+                BlockBehaviour.Properties.of().noCollision().noOcclusion().strength(2.0F, 3.0F).sound(SoundType.CHAIN));
     }
 
     private static <B extends Block> RegistrySupplier<B> block(String name, Function<BlockBehaviour.Properties, B> factory, BlockBehaviour.Properties props) {

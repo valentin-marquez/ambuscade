@@ -1,0 +1,8 @@
+{
+  "parent": "ambuscade:block/barbed_wire_side_free",
+  "textures": {
+    "particle": "minecraft:block/warped_stem",
+    "post": "minecraft:block/warped_stem",
+    "post_top": "minecraft:block/warped_stem_top"
+  }
+}

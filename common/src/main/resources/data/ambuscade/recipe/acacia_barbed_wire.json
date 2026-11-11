@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "ambuscade:barbed_wire",
+  "pattern": [
+    "N N",
+    "NLN",
+    "N N"
+  ],
+  "key": {
+    "N": "minecraft:iron_nugget",
+    "L": "#minecraft:acacia_logs"
+  },
+  "result": {
+    "id": "ambuscade:acacia_barbed_wire",
+    "count": 4
+  }
+}

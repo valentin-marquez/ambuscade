@@ -1,0 +1,108 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "post": "true"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_shaft"
+      }
+    },
+    {
+      "when": {
+        "post": "true",
+        "down": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_foot"
+      }
+    },
+    {
+      "when": {
+        "post": "true",
+        "up": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_top"
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "post": "true"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_post"
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "post": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_free"
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "post": "true"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_post",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "post": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_free",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "post": "true"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_post",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "post": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_free",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "post": "true"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_post",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "post": "false"
+      },
+      "apply": {
+        "model": "ambuscade:block/dark_oak_barbed_wire_side_free",
+        "y": 270
+      }
+    }
+  ]
+}
