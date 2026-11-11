@@ -4,7 +4,7 @@
 
 First release, for Minecraft 26.1.2 on Fabric and NeoForge.
 
-- Barbed wire and bear trap
+- Barbed wire in every wood, and bear trap
 - Explosive, gas and teleport mines
 - Camouflage net to hide mines and bear traps
 - Sentry turret in four tiers, fed with arrows; endless ammo module
