@@ -84,6 +84,7 @@ jobs:
               --arg mc "$MC" --arg type "$TYPE" --arg loader "$1" --arg project "$project_id" --argjson deps "$3" \
               '{name: $name, version_number: $number, changelog: $changelog, dependencies: $deps,
                 game_versions: [$mc], version_type: $type, loaders: [$loader], featured: true,
+                environment: "client_and_server",
                 status: "listed", project_id: $project, file_parts: ["file"], primary_file: "file"}' > data.json
             curl -sS --fail-with-body -A "$ua" -H "Authorization: $MODRINTH_TOKEN" "$api/version" \
               -F "data=<data.json;type=application/json" \
