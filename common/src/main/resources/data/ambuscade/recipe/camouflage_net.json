@@ -7,8 +7,12 @@
     "SLS"
   ],
   "key": {
-    "S": "minecraft:string",
-    "L": "#minecraft:leaves"
+    "S": {
+      "item": "minecraft:string"
+    },
+    "L": {
+      "tag": "minecraft:leaves"
+    }
   },
   "result": {
     "id": "ambuscade:camouflage_net",

@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
   "ingredients": [
-    "minecraft:map",
-    "minecraft:redstone"
+    {
+      "item": "minecraft:map"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
   ],
   "result": {
     "id": "ambuscade:fire_order",

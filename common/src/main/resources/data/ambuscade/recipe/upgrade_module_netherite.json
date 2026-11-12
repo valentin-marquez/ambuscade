@@ -7,9 +7,15 @@
     " S "
   ],
   "key": {
-    "T": "minecraft:netherite_ingot",
-    "S": "minecraft:diamond",
-    "C": "minecraft:comparator"
+    "T": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "S": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
   },
   "result": {
     "id": "ambuscade:upgrade_module",

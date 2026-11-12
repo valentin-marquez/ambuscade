@@ -2,5 +2,13 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "ambuscade:item/fire_order"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "ambuscade:marked": 1
+      },
+      "model": "ambuscade:item/fire_order_marked"
+    }
+  ]
 }

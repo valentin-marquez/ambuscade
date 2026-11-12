@@ -1,5 +1,4 @@
 {
-  "block.ambuscade.barbed_wire": "Pale Oak Barbed Wire",
   "block.ambuscade.bear_trap": "Bear Trap",
   "itemGroup.ambuscade": "Ambuscade",
   "death.attack.ambuscade.barbed_wire": "%1$s got tangled in barbed wire",
@@ -87,7 +86,6 @@
   "block.ambuscade.locked_mangrove_door": "Mangrove Door with Keypad",
   "block.ambuscade.locked_oak_door": "Oak Door with Keypad",
   "block.ambuscade.locked_oxidized_copper_door": "Oxidized Copper Door with Keypad",
-  "block.ambuscade.locked_pale_oak_door": "Pale Oak Door with Keypad",
   "block.ambuscade.locked_spruce_door": "Spruce Door with Keypad",
   "block.ambuscade.locked_warped_door": "Warped Door with Keypad",
   "block.ambuscade.locked_waxed_copper_door": "Waxed Copper Door with Keypad",

@@ -1,1 +1,19 @@
-{"type":"minecraft:crafting_shapeless","category":"misc","ingredients":["minecraft:book","minecraft:iron_nugget","minecraft:leather"],"result":{"id":"ambuscade:perimeter_ledger","count":1}}
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:leather"
+    }
+  ],
+  "result": {
+    "id": "ambuscade:perimeter_ledger",
+    "count": 1
+  }
+}

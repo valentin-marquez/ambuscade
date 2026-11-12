@@ -1,1 +1,24 @@
-{"type":"minecraft:crafting_shaped","category":"redstone","pattern":[" N ","NFN"," P "],"key":{"N":"minecraft:iron_nugget","F":"minecraft:fermented_spider_eye","P":"minecraft:stone_pressure_plate"},"result":{"id":"ambuscade:gas_mine","count":2}}
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " N ",
+    "NFN",
+    " P "
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "F": {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    "P": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  "result": {
+    "id": "ambuscade:gas_mine",
+    "count": 2
+  }
+}

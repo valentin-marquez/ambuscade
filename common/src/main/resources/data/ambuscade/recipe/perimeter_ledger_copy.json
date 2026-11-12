@@ -1,15 +1,4 @@
 {
-  "type": "minecraft:crafting_transmute",
-  "add_material_count_to_result": true,
-  "category": "misc",
-  "group": "perimeter_ledger_copy",
-  "input": "ambuscade:perimeter_ledger",
-  "material": "minecraft:book",
-  "material_count": {
-    "min": 1,
-    "max": 1
-  },
-  "result": {
-    "id": "ambuscade:perimeter_ledger"
-  }
+  "type": "ambuscade:perimeter_ledger_copy",
+  "category": "misc"
 }

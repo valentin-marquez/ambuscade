@@ -1,0 +1,23 @@
+{
+  "parent": "ambuscade:item/upgrade_module_gold",
+  "overrides": [
+    {
+      "predicate": {
+        "ambuscade:upgrade": 0.25
+      },
+      "model": "ambuscade:item/upgrade_module_diamond"
+    },
+    {
+      "predicate": {
+        "ambuscade:upgrade": 0.5
+      },
+      "model": "ambuscade:item/upgrade_module_netherite"
+    },
+    {
+      "predicate": {
+        "ambuscade:upgrade": 0.75
+      },
+      "model": "ambuscade:item/upgrade_module_endless"
+    }
+  ]
+}

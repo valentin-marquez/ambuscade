@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:mangrove_logs"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:mangrove_logs"
+    }
   },
   "result": {
     "id": "ambuscade:mangrove_barbed_wire",

@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:bamboo_blocks"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:bamboo_blocks"
+    }
   },
   "result": {
     "id": "ambuscade:bamboo_barbed_wire",

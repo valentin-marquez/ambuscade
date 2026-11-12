@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:crimson_stems"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:crimson_stems"
+    }
   },
   "result": {
     "id": "ambuscade:crimson_barbed_wire",

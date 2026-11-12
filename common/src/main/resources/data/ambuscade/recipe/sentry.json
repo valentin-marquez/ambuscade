@@ -7,9 +7,15 @@
     "I I"
   ],
   "key": {
-    "I": "minecraft:iron_ingot",
-    "C": "minecraft:crossbow",
-    "D": "minecraft:dispenser"
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:crossbow"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    }
   },
   "result": {
     "id": "ambuscade:sentry",

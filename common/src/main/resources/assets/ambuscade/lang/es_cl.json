@@ -1,5 +1,4 @@
 {
-  "block.ambuscade.barbed_wire": "Alambre de púas de roble pálido",
   "block.ambuscade.bear_trap": "Trampa para osos",
   "itemGroup.ambuscade": "Ambuscade",
   "death.attack.ambuscade.barbed_wire": "%1$s se enredó en el alambre de púas",
@@ -87,7 +86,6 @@
   "block.ambuscade.locked_mangrove_door": "Puerta de mangle con teclado",
   "block.ambuscade.locked_oak_door": "Puerta de roble con teclado",
   "block.ambuscade.locked_oxidized_copper_door": "Puerta de cobre oxidado con teclado",
-  "block.ambuscade.locked_pale_oak_door": "Puerta de roble pálido con teclado",
   "block.ambuscade.locked_spruce_door": "Puerta de abeto con teclado",
   "block.ambuscade.locked_warped_door": "Puerta distorsionada con teclado",
   "block.ambuscade.locked_waxed_copper_door": "Puerta de cobre encerado con teclado",

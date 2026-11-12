@@ -7,9 +7,15 @@
     "DAD"
   ],
   "key": {
-    "D": "minecraft:diamond_block",
-    "A": "minecraft:arrow",
-    "C": "minecraft:comparator"
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
   },
   "result": {
     "id": "ambuscade:upgrade_module",

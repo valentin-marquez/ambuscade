@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:oak_logs"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:oak_logs"
+    }
   },
   "result": {
     "id": "ambuscade:oak_barbed_wire",

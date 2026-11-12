@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:cherry_logs"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:cherry_logs"
+    }
   },
   "result": {
     "id": "ambuscade:cherry_barbed_wire",

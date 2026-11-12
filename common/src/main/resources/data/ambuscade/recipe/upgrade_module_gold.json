@@ -7,9 +7,15 @@
     " S "
   ],
   "key": {
-    "T": "minecraft:gold_ingot",
-    "S": "minecraft:gold_ingot",
-    "C": "minecraft:comparator"
+    "T": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
   },
   "result": {
     "id": "ambuscade:upgrade_module",

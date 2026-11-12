@@ -7,9 +7,15 @@
     " S "
   ],
   "key": {
-    "T": "minecraft:diamond",
-    "S": "minecraft:diamond",
-    "C": "minecraft:comparator"
+    "T": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    }
   },
   "result": {
     "id": "ambuscade:upgrade_module",

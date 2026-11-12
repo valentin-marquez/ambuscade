@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:acacia_logs"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:acacia_logs"
+    }
   },
   "result": {
     "id": "ambuscade:acacia_barbed_wire",

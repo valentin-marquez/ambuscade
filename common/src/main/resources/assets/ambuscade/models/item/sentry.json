@@ -1,0 +1,23 @@
+{
+  "parent": "ambuscade:block/sentry_iron",
+  "overrides": [
+    {
+      "predicate": {
+        "ambuscade:tier": 0.25
+      },
+      "model": "ambuscade:block/sentry_gold"
+    },
+    {
+      "predicate": {
+        "ambuscade:tier": 0.5
+      },
+      "model": "ambuscade:block/sentry_diamond"
+    },
+    {
+      "predicate": {
+        "ambuscade:tier": 0.75
+      },
+      "model": "ambuscade:block/sentry_netherite"
+    }
+  ]
+}

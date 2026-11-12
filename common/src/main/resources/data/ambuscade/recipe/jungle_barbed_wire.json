@@ -8,8 +8,12 @@
     "N N"
   ],
   "key": {
-    "N": "minecraft:iron_nugget",
-    "L": "#minecraft:jungle_logs"
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "tag": "minecraft:jungle_logs"
+    }
   },
   "result": {
     "id": "ambuscade:jungle_barbed_wire",
