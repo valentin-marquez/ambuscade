@@ -54,9 +54,10 @@ jobs:
               echo "kept $title"
             else
               featured=false; [ "$n" = 0 ] && featured=true
-              curl -fsS -A "$ua" "${auth[@]}" -X POST -H "Content-Type: image/gif" --data-binary "@media/$file.gif" -G \
-                --data-urlencode "ext=gif" --data-urlencode "featured=$featured" --data-urlencode "title=$title" \
-                --data-urlencode "description=$desc" --data-urlencode "ordering=$n" "$api/project/$PROJECT/gallery"
+              query="$(jq -rn --arg f "$featured" --arg t "$title" --arg d "$desc" --arg o "$n" \
+                '"ext=gif&featured=\($f)&title=\($t|@uri)&description=\($d|@uri)&ordering=\($o)"')"
+              curl -fsS -A "$ua" "${auth[@]}" -X POST -H "Content-Type: image/gif" --data-binary "@media/$file.gif" \
+                "$api/project/$PROJECT/gallery?$query"
               echo "added $title"
             fi
             n=$((n + 1))
