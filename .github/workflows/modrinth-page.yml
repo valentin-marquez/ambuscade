@@ -18,9 +18,11 @@ jobs:
           api=https://api.modrinth.com/v2
           ua="valentin-marquez/ambuscade page workflow"
           auth=(-H "Authorization: $MODRINTH_TOKEN")
-          jq -n --rawfile body .github/modrinth/description.md '{body: $body}' |
+          jq -n --rawfile body .github/modrinth/description.md \
+            '{body: $body, license_id: "LicenseRef-All-Rights-Reserved",
+              license_url: "https://github.com/valentin-marquez/ambuscade/blob/main/LICENSE"}' |
             curl -fsS -A "$ua" "${auth[@]}" -X PATCH -H "Content-Type: application/json" --data-binary @- "$api/project/$PROJECT"
-          echo "description updated"
+          echo "description and license updated"
 
           # file|title|description, in gallery order; the first one is featured
           gallery='sentry|Sentry|Patrols, turns and fires at what comes in
