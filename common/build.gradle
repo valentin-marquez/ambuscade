@@ -3,10 +3,14 @@ architectury {
 }
 
 dependencies {
-    implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-    implementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+    modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    // only so Loom remaps the GeckoLib jar below with a complete classpath: its client reload listener implements a
+    // Fabric API interface, and without it the remapped copy (shared with the fabric run) keeps an intermediary
+    // method name and the client dies with an AbstractMethodError. Never import net.fabricmc.fabric.api here.
+    modCompileOnly "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     // common code compiles against the fabric GeckoLib jar; its API is loader-neutral
-    compileOnly "maven.modrinth:geckolib:$rootProject.geckolib_fabric"
+    modCompileOnly "maven.modrinth:geckolib:$rootProject.geckolib_fabric"
 }
 
 dependencies {

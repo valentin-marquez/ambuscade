@@ -13,28 +13,28 @@ logoFile = "assets/ambuscade/icon.png"
 [[dependencies.ambuscade]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.2,)"
+versionRange = "[21.1.0,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ambuscade]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.1.2,26.2)"
+versionRange = "[1.21.1,1.21.2)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ambuscade]]
 modId = "architectury"
 type = "required"
-versionRange = "[20.1.0,)"
+versionRange = "[13.0.0,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ambuscade]]
 modId = "geckolib"
 type = "required"
-versionRange = "[5.5.0,)"
+versionRange = "[4.7.0,)"
 ordering = "AFTER"
 side = "BOTH"
 

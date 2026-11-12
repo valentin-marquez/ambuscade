@@ -1,6 +1,6 @@
 name: Release
 
-# Push a tag v<mod_version>-mc<minecraft_version>, e.g. v0.1.0-mc26.1.2 or v0.1.0-beta.1-mc26.1.2.
+# Push a tag v<mod_version>-mc<minecraft_version>, e.g. v0.1.0-mc1.21.1 or v0.1.0-beta.1-mc1.21.1.
 # Builds both loaders, creates the GitHub release and publishes both jars to Modrinth.
 # Needs secret MODRINTH_TOKEN and variable MODRINTH_PROJECT_ID. Safe to re-run.
 
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "25"
+          java-version: "21"
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.4
 
       - name: Read tag

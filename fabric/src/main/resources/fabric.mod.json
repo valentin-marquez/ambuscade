@@ -13,12 +13,12 @@
     "client": ["com.nozz.ambuscade.fabric.AmbuscadeFabricClient"]
   },
   "depends": {
-    "fabricloader": ">=0.20.0",
-    "minecraft": "~26.1.2",
-    "java": ">=25",
-    "architectury": ">=20.1.0",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.0",
     "fabric-api": "*",
-    "geckolib": ">=5.5.0"
+    "geckolib": ">=4.7.0"
   },
   "mixins": ["ambuscade.mixins.json"]
 }

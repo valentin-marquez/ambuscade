@@ -65,7 +65,7 @@ Choose who your traps spare, or who they go after: players by name, pets, farm a
 
 ## Requirements
 
-- Minecraft 26.1.2, Fabric Loader or NeoForge
+- Minecraft 1.21.1, Fabric Loader or NeoForge
 - [Architectury API](https://modrinth.com/mod/architectury-api)
 - [GeckoLib](https://modrinth.com/mod/geckolib)
 - [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)

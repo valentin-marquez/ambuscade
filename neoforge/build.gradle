@@ -54,10 +54,10 @@ repositories {
 
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
-    implementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
-    implementation "maven.modrinth:geckolib:$rootProject.geckolib_neoforge"
+    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+    modImplementation "maven.modrinth:geckolib:$rootProject.geckolib_neoforge"
 
-    common(project(path: ':common')) { transitive = false }
+    common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 }
 
@@ -68,17 +68,12 @@ processResources {
     }
 }
 
-// merge the common classes/resources into the loader jar (same pattern as vouch)
+// merge the common classes/resources into the loader jar, then remap it to intermediary/SRG names
 shadowJar {
     configurations = [project.configurations.shadowBundle]
-    dependsOn jar
-    mainSpec.sourcePaths.clear()
-    from(zipTree(jar.archiveFile))
-    archiveClassifier = null
+    archiveClassifier = 'dev-shadow'
 }
 
-jar {
-    archiveClassifier = 'raw'
+remapJar {
+    inputFile.set shadowJar.archiveFile
 }
-
-assemble.dependsOn shadowJar
