@@ -2,7 +2,7 @@
 
 ## 0.1.0
 
-First release, for Minecraft 26.1.2 on Fabric and NeoForge.
+First release, for Minecraft 1.21.1 on Fabric and NeoForge.
 
 - Barbed wire in every wood, and bear trap
 - Explosive, gas and teleport mines
