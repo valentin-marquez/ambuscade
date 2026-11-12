@@ -71,13 +71,13 @@ jobs:
         run: |
           api=https://api.modrinth.com/v2
           ua="valentin-marquez/ambuscade release workflow"
-          project_id="$(curl -fsS -A "$ua" "$api/project/$PROJECT" | jq -r .id)"
+          project_id="$(curl -fsS -A "$ua" -H "Authorization: $MODRINTH_TOKEN" "$api/project/$PROJECT" | jq -r .id)"   # token: a draft project is not public
           dep() { curl -fsS -A "$ua" "$api/project/$1" | jq '{project_id: .id, dependency_type: "required"}'; }
           geckolib="$(dep geckolib)"; architectury="$(dep architectury-api)"; fabric_api="$(dep fabric-api)"
 
           publish() {  # loader, display name, dependencies json array
             number="$VERSION+mc$MC-$1"
-            if curl -fsS -A "$ua" "$api/project/$project_id/version" | jq -e --arg n "$number" 'any(.[]; .version_number == $n)' > /dev/null; then
+            if curl -fsS -A "$ua" -H "Authorization: $MODRINTH_TOKEN" "$api/project/$project_id/version" | jq -e --arg n "$number" 'any(.[]; .version_number == $n)' > /dev/null; then
               echo "$number already on Modrinth"; return
             fi
             jq -n --arg name "Ambuscade $VERSION ($2)" --arg number "$number" --rawfile changelog notes.md \
