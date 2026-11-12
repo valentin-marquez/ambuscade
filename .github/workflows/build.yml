@@ -11,9 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Java version
+        # 1.x versions build on Java 21, 26.x on Java 25
+        run: |
+          mc="$(grep '^minecraft_version' gradle.properties | cut -d= -f2 | tr -d ' ')"
+          case "$mc" in 1.*) echo "JAVA=21" ;; *) echo "JAVA=25" ;; esac >> "$GITHUB_ENV"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
+          java-version: ${{ env.JAVA }}
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.4
       - run: ./gradlew build --no-daemon

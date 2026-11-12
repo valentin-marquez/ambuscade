@@ -1,0 +1,64 @@
+name: Modrinth page
+
+# Run by hand after changing .github/modrinth/description.md or media/*.gif.
+# Sets the project description and makes the gallery exactly the GIFs listed below (others are removed).
+
+on: workflow_dispatch
+
+jobs:
+  page:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Description and gallery
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          PROJECT: ${{ vars.MODRINTH_PROJECT_ID }}
+        run: |
+          api=https://api.modrinth.com/v2
+          ua="valentin-marquez/ambuscade page workflow"
+          auth=(-H "Authorization: $MODRINTH_TOKEN")
+          jq -n --rawfile body .github/modrinth/description.md '{body: $body}' |
+            curl -fsS -A "$ua" "${auth[@]}" -X PATCH -H "Content-Type: application/json" --data-binary @- "$api/project/$PROJECT"
+          echo "description updated"
+
+          # file|title|description, in gallery order; the first one is featured
+          gallery='sentry|Sentry|Patrols, turns and fires at what comes in
+          tiers|Four tiers|Iron, gold, diamond and netherite
+          mortar|Mortar|Indirect fire, 2 to 96 blocks
+          bear_trap|Bear trap|Snaps shut and holds
+          mines|Explosive mine|Goes off under whoever steps on it
+          gas|Gas mine|A poison cloud, one use
+          teleport|Teleport mine|Sends the victim where you set it
+          wire|Barbed wire|Slows and cuts, through armour
+          camouflage|Camouflage net|Hides a mine or bear trap
+          keypad|Keypad door|Opens only with the code
+          chest|Keypad chest|A wrong code, then the right one
+          ledger|Perimeter ledger|Choose who your traps spare'
+          titles="$(cut -d'|' -f2 <<< "$gallery")"
+
+          current="$(curl -fsS -A "$ua" "${auth[@]}" "$api/project/$PROJECT" | jq -c '.gallery[]')"
+          while read -r item; do
+            [ -n "$item" ] || continue
+            title="$(jq -r '.title // ""' <<< "$item")"; url="$(jq -r .url <<< "$item")"
+            if ! grep -qxF "$title" <<< "$titles"; then
+              curl -fsS -A "$ua" "${auth[@]}" -X DELETE -G --data-urlencode "url=$url" "$api/project/$PROJECT/gallery"
+              echo "removed ${title:-untitled}"
+            fi
+          done <<< "$current"
+
+          n=0
+          while IFS='|' read -r file title desc; do
+            file="$(echo "$file" | xargs)"
+            if jq -e --arg t "$title" 'select(.title == $t)' <<< "$current" > /dev/null; then
+              echo "kept $title"
+            else
+              featured=false; [ "$n" = 0 ] && featured=true
+              query="$(jq -rn --arg f "$featured" --arg t "$title" --arg d "$desc" --arg o "$n" \
+                '"ext=gif&featured=\($f)&title=\($t|@uri)&description=\($d|@uri)&ordering=\($o)"')"
+              curl -fsS -A "$ua" "${auth[@]}" -X POST -H "Content-Type: image/gif" --data-binary "@media/$file.gif" \
+                "$api/project/$PROJECT/gallery?$query"
+              echo "added $title"
+            fi
+            n=$((n + 1))
+          done <<< "$gallery"
