@@ -9,23 +9,25 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.PlayerFaceExtractor;
+import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.entity.player.PlayerSkin;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
@@ -100,7 +102,7 @@ public final class LedgerScreen extends Screen {
         suggestions.clear();
         if (minecraft.getConnection() != null) {
             for (PlayerInfo info : minecraft.getConnection().getOnlinePlayers()) {
-                String n = info.getProfile().name();
+                String n = info.getProfile().getName();
                 if (suggestions.size() < 2 && !n.equals(minecraft.getUser().getName()) && !names.contains(n.toLowerCase(Locale.ROOT))) suggestions.add(n);
             }
         }
@@ -208,21 +210,21 @@ public final class LedgerScreen extends Screen {
     private PlayerInfo onlineInfo(String name) {
         if (minecraft.getConnection() == null) return null;
         return minecraft.getConnection().getOnlinePlayers().stream()
-                .filter(i -> i.getProfile().name().equalsIgnoreCase(name)).findFirst().orElse(null);
+                .filter(i -> i.getProfile().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /** First online player whose name starts with what was typed, like chat tab-completion. */
     private String completion(String typed) {
         if (typed.isEmpty() || minecraft.getConnection() == null) return null;
         String lower = typed.toLowerCase(Locale.ROOT);
-        return minecraft.getConnection().getOnlinePlayers().stream().map(i -> i.getProfile().name())
+        return minecraft.getConnection().getOnlinePlayers().stream().map(i -> i.getProfile().getName())
                 .filter(n -> n.toLowerCase(Locale.ROOT).startsWith(lower) && n.length() > typed.length())
                 .sorted().findFirst().orElse(null);
     }
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
-        if (event.key() == GLFW_KEY_TAB && nameBox != null && nameBox.isFocused()) {
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        if (key == GLFW_KEY_TAB && nameBox != null && nameBox.isFocused()) {
             String full = completion(nameBox.getValue());
             if (full != null) {
                 nameBox.setValue(full);
@@ -230,7 +232,7 @@ public final class LedgerScreen extends Screen {
             }
             return true;
         }
-        return super.keyPressed(event);
+        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
@@ -251,8 +253,8 @@ public final class LedgerScreen extends Screen {
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractBackground(g, mouseX, mouseY, partialTick);
+    public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.renderBackground(g, mouseX, mouseY, partialTick);
         int x = left(), y = top();
         g.fill(x - 3, y - 3, x + W + 3, y + h + 3, LEATHER_DARK);
         g.fill(x - 2, y - 2, x + W + 2, y + h + 2, LEATHER);
@@ -266,34 +268,34 @@ public final class LedgerScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractRenderState(g, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.render(g, mouseX, mouseY, partialTick);
         int x = left(), y = top(), inner = x + 14;
 
-        g.item(new ItemStack(AmbuscadeRegistry.PERIMETER_LEDGER.get()), inner, y + 10);
-        g.text(font, title, inner + 22, y + 14, INK, false);
+        g.renderItem(new ItemStack(AmbuscadeRegistry.PERIMETER_LEDGER.get()), inner, y + 10);
+        g.drawString(font, title, inner + 22, y + 14, INK, false);
 
         if (tab == 0) renderList(g, x, y, inner);
         else renderTraps(g, x, y, inner);
     }
 
-    private void renderList(GuiGraphicsExtractor g, int x, int y, int inner) {
-        g.text(font, Component.translatable("gui.ambuscade.ledger.mode"), inner, y + 42, INK, false);
+    private void renderList(GuiGraphics g, int x, int y, int inner) {
+        g.drawString(font, Component.translatable("gui.ambuscade.ledger.mode"), inner, y + 42, INK, false);
 
         List<FormattedCharSequence> hint = font.split(Component.translatable(target ? "gui.ambuscade.ledger.hint.target" : "gui.ambuscade.ledger.hint.protect"), W - 28);
         for (int i = 0; i < Math.min(2, hint.size()); i++) {
-            g.text(font, hint.get(i), x + (W - font.width(hint.get(i))) / 2, y + 62 + i * 10, INK_SOFT, false);
+            g.drawString(font, hint.get(i), x + (W - font.width(hint.get(i))) / 2, y + 62 + i * 10, INK_SOFT, false);
         }
 
-        g.text(font, Component.translatable("gui.ambuscade.ledger.creatures"), inner, y + 86, INK, false);
+        g.drawString(font, Component.translatable("gui.ambuscade.ledger.creatures"), inner, y + 86, INK, false);
         for (int i = 0; i < creatureButtons.size(); i++) {
             Button b = creatureButtons.get(i);
-            g.item(CREATURE_ICONS[i], b.getX() + 3, b.getY() + 2);
+            g.renderItem(CREATURE_ICONS[i], b.getX() + 3, b.getY() + 2);
         }
 
-        g.text(font, Component.translatable(target ? "gui.ambuscade.ledger.players.target" : "gui.ambuscade.ledger.players.protect"), inner, y + 146, INK, false);
+        g.drawString(font, Component.translatable(target ? "gui.ambuscade.ledger.players.target" : "gui.ambuscade.ledger.players.protect"), inner, y + 146, INK, false);
         String count = names.size() + " / " + Ledger.MAX_NAMES;
-        g.text(font, count, x + W - 14 - font.width(count), y + 146, INK_SOFT, false);
+        g.drawString(font, count, x + W - 14 - font.width(count), y + 146, INK_SOFT, false);
 
         int listTop = y + 156;
         for (int i = scroll; i < Math.min(names.size(), scroll + ROWS); i++) {
@@ -301,52 +303,52 @@ public final class LedgerScreen extends Screen {
             int ry = listTop + 2 + (i - scroll) * ROW_H;
             PlayerInfo info = onlineInfo(name);
             boolean online = info != null;
-            PlayerFaceExtractor.extractRenderState(g, skinOf(name, info), inner + 4, ry + 4, 12);
+            PlayerFaceRenderer.draw(g, skinOf(name, info), inner + 4, ry + 4, 12);
             Component label = name.equalsIgnoreCase(minecraft.getUser().getName())
                     ? Component.literal(name + " ").append(Component.translatable("gui.ambuscade.ledger.you").withStyle(ChatFormatting.YELLOW))
                     : Component.literal(name);
-            g.text(font, label, inner + 22, ry + 6, online ? WHITE : GRAY, true);
+            g.drawString(font, label, inner + 22, ry + 6, online ? WHITE : GRAY, true);
         }
-        if (names.isEmpty()) g.text(font, Component.translatable("gui.ambuscade.ledger.empty"), inner + 6, listTop + 8, GRAY, false);
+        if (names.isEmpty()) g.drawString(font, Component.translatable("gui.ambuscade.ledger.empty"), inner + 6, listTop + 8, GRAY, false);
         scrollbar(g, x, listTop, ROWS, scroll, names.size());
 
         if (!suggestions.isEmpty()) {
-            g.text(font, Component.translatable("gui.ambuscade.ledger.online"), inner, y + 254, INK_SOFT, false);
+            g.drawString(font, Component.translatable("gui.ambuscade.ledger.online"), inner, y + 254, INK_SOFT, false);
             for (int i = 0; i < suggestions.size(); i++) {
                 String n = suggestions.get(i);
-                PlayerFaceExtractor.extractRenderState(g, skinOf(n, minecraft.getConnection().getPlayerInfo(n)), inner + i * 104 + 6, y + 270, 12);
+                PlayerFaceRenderer.draw(g, skinOf(n, minecraft.getConnection().getPlayerInfo(n)), inner + i * 104 + 6, y + 270, 12);
             }
         }
     }
 
-    private void renderTraps(GuiGraphicsExtractor g, int x, int y, int inner) {
-        g.text(font, Component.translatable("gui.ambuscade.ledger.traps"), inner, y + 32, INK, false);
+    private void renderTraps(GuiGraphics g, int x, int y, int inner) {
+        g.drawString(font, Component.translatable("gui.ambuscade.ledger.traps"), inner, y + 32, INK, false);
         String count = traps.size() + " / " + Ledger.MAX_TRAPS;
-        g.text(font, count, x + W - 14 - font.width(count), y + 32, INK_SOFT, false);
+        g.drawString(font, count, x + W - 14 - font.width(count), y + 32, INK_SOFT, false);
 
         int listTop = y + 44, rows = trapRows();
         for (int i = trapScroll; i < Math.min(traps.size(), trapScroll + rows); i++) {
             LedgerNetwork.Trap trap = traps.get(i);
             int ry = listTop + 2 + (i - trapScroll) * ROW_H;
-            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(trap.block()));
-            g.item(new ItemStack(block.asItem()), inner + 3, ry + 3);
-            g.text(font, block.getName(), inner + 22, ry + 2, WHITE, true);
+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(trap.block()));
+            g.renderItem(new ItemStack(block.asItem()), inner + 3, ry + 3);
+            g.drawString(font, block.getName(), inner + 22, ry + 2, WHITE, true);
             var p = trap.pos().pos();
-            g.text(font, p.getX() + ", " + p.getY() + ", " + p.getZ(), inner + 22, ry + 12, GRAY, false);
+            g.drawString(font, p.getX() + ", " + p.getY() + ", " + p.getZ(), inner + 22, ry + 12, GRAY, false);
             double d = distance(trap);
             Component where = d == Double.MAX_VALUE
-                    ? Component.literal(trap.pos().dimension().identifier().getPath())
+                    ? Component.literal(trap.pos().dimension().location().getPath())
                     : Component.translatable("gui.ambuscade.ledger.meters", (int) Math.round(d));
-            g.text(font, where, inner + 178 - font.width(where), ry + 7, d == Double.MAX_VALUE ? GRAY : WHITE, true);
+            g.drawString(font, where, inner + 178 - font.width(where), ry + 7, d == Double.MAX_VALUE ? GRAY : WHITE, true);
         }
         if (traps.isEmpty()) {
             List<FormattedCharSequence> help = font.split(Component.translatable("gui.ambuscade.ledger.no_traps"), W - 40);
-            for (int i = 0; i < help.size(); i++) g.text(font, help.get(i), inner + 6, listTop + 8 + i * 10, GRAY, false);
+            for (int i = 0; i < help.size(); i++) g.drawString(font, help.get(i), inner + 6, listTop + 8 + i * 10, GRAY, false);
         }
         scrollbar(g, x, listTop, rows, trapScroll, traps.size());
     }
 
-    private void scrollbar(GuiGraphicsExtractor g, int x, int listTop, int rows, int offset, int total) {
+    private void scrollbar(GuiGraphics g, int x, int listTop, int rows, int offset, int total) {
         if (total <= rows) return;
         int track = rows * ROW_H, thumb = Math.max(8, track * rows / total);
         int ty = listTop + 2 + (track - thumb) * offset / Math.max(1, total - rows);
@@ -356,7 +358,8 @@ public final class LedgerScreen extends Screen {
     // online players carry their skin; offline ones resolve by name through the same cache player heads use
     private PlayerSkin skinOf(String name, PlayerInfo info) {
         if (info != null) return info.getSkin();
-        return minecraft.playerSkinRenderCache().getOrDefault(ResolvableProfile.createUnresolved(name)).playerSkin();
+        return SkullBlockEntity.fetchGameProfile(name).getNow(Optional.empty()).map(minecraft.getSkinManager()::getInsecureSkin)
+                .orElseGet(() -> DefaultPlayerSkin.get(UUIDUtil.createOfflinePlayerUUID(name)));
     }
 
     @Override

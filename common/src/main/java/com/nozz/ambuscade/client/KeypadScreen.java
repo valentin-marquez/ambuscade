@@ -8,11 +8,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 
 import com.nozz.ambuscade.block.Keypad;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 
 /** A steel keypad: twelve keys and a readout. Setting a code shows the digits, entering one shows dots. */
@@ -64,20 +62,18 @@ public final class KeypadScreen extends Screen {
     }
 
     @Override
-    public boolean charTyped(CharacterEvent event) {
-        int c = event.codepoint();
+    public boolean charTyped(char c, int modifiers) {
         if (c >= '0' && c <= '9') {
             if (c != echo) press(Character.toString(c));
             echo = -1;
             return true;
         }
-        return super.charTyped(event);
+        return super.charTyped(c, modifiers);
     }
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
         echo = -1;
-        int key = event.key();
         if (key >= GLFW_KEY_KP_0 && key <= GLFW_KEY_KP_9) {   // the numpad, with or without Num Lock
             echo = '0' + key - GLFW_KEY_KP_0;
             press(Character.toString(echo));
@@ -87,15 +83,15 @@ public final class KeypadScreen extends Screen {
             case GLFW_KEY_BACKSPACE -> press("<");
             case GLFW_KEY_ENTER, GLFW_KEY_KP_ENTER -> press("OK");
             default -> {
-                return super.keyPressed(event);
+                return super.keyPressed(key, scanCode, modifiers);
             }
         }
         return true;
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractBackground(g, mouseX, mouseY, partialTick);
+    public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.renderBackground(g, mouseX, mouseY, partialTick);
         int x = left(), y = top();
         g.fill(x - 3, y - 3, x + W + 3, y + H + 3, FRAME);
         g.fill(x - 2, y - 2, x + W + 2, y + H + 2, PLATE_LIT);
@@ -110,16 +106,16 @@ public final class KeypadScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractRenderState(g, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.render(g, mouseX, mouseY, partialTick);
         int x = left(), y = top();
         Component label = Component.translatable(data.setting() ? "gui.ambuscade.keypad.set" : "gui.ambuscade.keypad.enter");
-        g.text(font, label, x + (W - font.width(label)) / 2, y + 14, LABEL, false);
+        g.drawString(font, label, x + (W - font.width(label)) / 2, y + 14, LABEL, false);
         String shown = data.setting() ? code : "*".repeat(code.length());
         if (shown.isEmpty()) shown = "_";
-        g.text(font, shown, x + (W - font.width(shown)) / 2, y + 37, SCREEN_INK, false);
+        g.drawString(font, shown, x + (W - font.width(shown)) / 2, y + 37, SCREEN_INK, false);
         Component hint = Component.translatable("gui.ambuscade.keypad.hint", Keypad.MIN_DIGITS, Keypad.MAX_DIGITS);
-        g.text(font, hint, x + (W - font.width(hint)) / 2, y + H - 18, LABEL, false);
+        g.drawString(font, hint, x + (W - font.width(hint)) / 2, y + H - 18, LABEL, false);
     }
 
     @Override

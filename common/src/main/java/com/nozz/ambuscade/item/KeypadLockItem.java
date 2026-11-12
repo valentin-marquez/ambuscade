@@ -14,7 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
+import dev.architectury.event.EventResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,15 +32,15 @@ public class KeypadLockItem extends Item {
             ItemStack stack = player.getItemInHand(hand);
             Level level = player.level();
             BlockState state = level.getBlockState(pos);
-            if (!(stack.getItem() instanceof KeypadLockItem)) return InteractionResult.PASS;
+            if (!(stack.getItem() instanceof KeypadLockItem)) return EventResult.pass();
             if (state.is(Blocks.CHEST)) {   // only the plain chest: not trapped, copper or ender ones
                 if (player instanceof ServerPlayer sp) fitChest((ServerLevel) level, sp, pos, state, stack);
-                return InteractionResult.SUCCESS;
+                return EventResult.interruptTrue();
             }
             RegistrySupplier<KeypadDoorBlock> locked = AmbuscadeRegistry.LOCKED_DOORS.get(state.getBlock());
-            if (locked == null) return InteractionResult.PASS;
+            if (locked == null) return EventResult.pass();
             if (player instanceof ServerPlayer sp) fit(level, sp, pos, state, locked.get(), stack);
-            return InteractionResult.SUCCESS;
+            return EventResult.interruptTrue();
         });
     }
 

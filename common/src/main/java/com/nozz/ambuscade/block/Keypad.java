@@ -69,9 +69,9 @@ public final class Keypad {
         boolean owner = isOwner(holder, player);
         long locked = lock.lockedFor(player.level().getGameTime());
         if (!lock.hasCode() && !owner) {
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.not_set"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.keypad.not_set"), true);
         } else if (locked > 0 && !owner) {
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.locked", (locked + 19) / 20));
+            player.displayClientMessage(Component.translatable("message.ambuscade.keypad.locked", (locked + 19) / 20), true);
         } else {
             NetworkManager.sendToPlayer(player, new Open(holder.getBlockPos(), !lock.hasCode() || owner && player.isShiftKeyDown()));
         }
@@ -85,7 +85,7 @@ public final class Keypad {
             lock.setCode(msg.code());
             holder.keypadChanged();
             level.playSound(null, pos, SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.BLOCKS, 0.8F, 1.6F);
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.keypad.set"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.keypad.set"), true);
             return;
         }
         long now = level.getGameTime();
@@ -98,9 +98,9 @@ public final class Keypad {
         } else {
             level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BASS.value(), SoundSource.BLOCKS, 1.0F, 0.5F);
             long locked = lock.lockedFor(now);
-            player.sendOverlayMessage(locked > 0
+            player.displayClientMessage(locked > 0
                     ? Component.translatable("message.ambuscade.keypad.locked", (locked + 19) / 20)
-                    : Component.translatable("message.ambuscade.keypad.wrong"));
+                    : Component.translatable("message.ambuscade.keypad.wrong"), true);
         }
     }
 }

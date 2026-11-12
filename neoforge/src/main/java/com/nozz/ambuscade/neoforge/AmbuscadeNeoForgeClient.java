@@ -10,6 +10,7 @@ import com.nozz.ambuscade.client.SteelBoltRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 @Mod(value = Ambuscade.MOD_ID, dist = Dist.CLIENT)
@@ -24,6 +25,7 @@ public final class AmbuscadeNeoForgeClient {
             event.registerEntityRenderer(AmbuscadeRegistry.MORTAR_SHELL.get(), MortarShellRenderer::new);
             event.registerEntityRenderer(AmbuscadeRegistry.STEEL_BOLT.get(), SteelBoltRenderer::new);
         });
+        bus.addListener(FMLClientSetupEvent.class, event -> event.enqueueWork(AmbuscadeClient::setup));
         AmbuscadeClient.init();
         com.nozz.ambuscade.client.AmbuscadeClient.startHarness();
     }

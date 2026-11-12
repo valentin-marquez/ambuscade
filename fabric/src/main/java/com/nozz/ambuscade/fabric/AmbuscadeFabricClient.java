@@ -21,6 +21,7 @@ public final class AmbuscadeFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(AmbuscadeRegistry.MORTAR_SHELL, MortarShellRenderer::new);
         EntityRendererRegistry.register(AmbuscadeRegistry.STEEL_BOLT, SteelBoltRenderer::new);
         AmbuscadeClient.init();
+        AmbuscadeClient.setup();
         com.nozz.ambuscade.client.AmbuscadeClient.startHarness();
     }
 }

@@ -1,23 +1,23 @@
 package com.nozz.ambuscade.block;
 
-import com.geckolib.animatable.GeoBlockEntity;
-import com.geckolib.animatable.instance.AnimatableInstanceCache;
-import com.geckolib.animatable.manager.AnimatableManager;
-import com.geckolib.animation.AnimationController;
-import com.geckolib.animation.RawAnimation;
-import com.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import com.nozz.ambuscade.AmbuscadeRegistry;
 import com.nozz.ambuscade.ledger.LedgerLink;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 public class BearTrapBlockEntity extends BlockEntity implements GeoBlockEntity, LedgerLink {
     public static final String CONTROLLER = "main";
@@ -81,7 +81,7 @@ public class BearTrapBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<BearTrapBlockEntity>(CONTROLLER,
+        controllers.add(new AnimationController<BearTrapBlockEntity>(this, CONTROLLER,
                 test -> test.setAndContinue(getBlockState().getValue(BearTrapBlock.ARMED) ? OPEN : CLOSED))
                 .triggerableAnim("snap", SNAP)
                 .triggerableAnim("arm", ARM));
@@ -93,14 +93,14 @@ public class BearTrapBlockEntity extends BlockEntity implements GeoBlockEntity, 
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        owner.save(output);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        owner.save(tag);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        owner.load(input);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        owner.load(tag);
     }
 }

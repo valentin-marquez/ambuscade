@@ -6,19 +6,17 @@ import com.nozz.ambuscade.ledger.LedgerData;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.golem.IronGolem;
-import net.minecraft.world.entity.animal.golem.SnowGolem;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.scores.PlayerTeam;
 
 /** Who a trap spares: its linked hunter's ledger if any, otherwise the placer and their scoreboard team. */
@@ -58,7 +56,7 @@ public final class TrapOwner {
             if (l != null) return l.affects(entity instanceof Player p ? p.getScoreboardName() : null, kinds(entity));
         }
         if (uuid == null) return true;
-        if (entity instanceof OwnableEntity pet && pet.getOwnerReference() != null && uuid.equals(pet.getOwnerReference().getUUID())) return false;
+        if (entity instanceof OwnableEntity pet && uuid.equals(pet.getOwnerUUID())) return false;
         if (entity.getUUID().equals(uuid)) return false;
         PlayerTeam team = level.getScoreboard().getPlayersTeam(name);
         return team == null || !entity.isAlliedTo(team);
@@ -66,7 +64,7 @@ public final class TrapOwner {
 
     static Set<Creature> kinds(LivingEntity entity) {
         EnumSet<Creature> kinds = EnumSet.noneOf(Creature.class);
-        boolean pet = entity instanceof OwnableEntity o && o.getOwnerReference() != null;
+        boolean pet = entity instanceof OwnableEntity o && o.getOwnerUUID() != null;
         if (pet) kinds.add(Creature.PETS);
         else if (entity instanceof Animal) kinds.add(Creature.FARM);
         if (entity instanceof AbstractVillager || entity instanceof IronGolem || entity instanceof SnowGolem) kinds.add(Creature.VILLAGERS);
@@ -83,16 +81,16 @@ public final class TrapOwner {
         return c;
     }
 
-    public void save(ValueOutput output) {
-        if (ledger != null) output.store("ledger", UUIDUtil.CODEC, ledger);
+    public void save(CompoundTag tag) {
+        if (ledger != null) tag.putUUID("ledger", ledger);
         if (uuid == null) return;
-        output.store("owner", UUIDUtil.CODEC, uuid);
-        output.putString("owner_name", name);
+        tag.putUUID("owner", uuid);
+        tag.putString("owner_name", name);
     }
 
-    public void load(ValueInput input) {
-        ledger = input.read("ledger", UUIDUtil.CODEC).orElse(null);
-        uuid = input.read("owner", UUIDUtil.CODEC).orElse(null);
-        name = input.getStringOr("owner_name", "");
+    public void load(CompoundTag tag) {
+        ledger = tag.hasUUID("ledger") ? tag.getUUID("ledger") : null;
+        uuid = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
+        name = tag.getString("owner_name");
     }
 }

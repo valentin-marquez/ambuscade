@@ -8,17 +8,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -68,8 +66,7 @@ public class BarbedWireBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos,
-                                     Direction dir, BlockPos neighborPos, BlockState neighbor, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction dir, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         return connect(state, level, pos);
     }
 
@@ -99,7 +96,7 @@ public class BarbedWireBlock extends Block {
             level.setBlock(pos, state.cycle(POST), Block.UPDATE_ALL);
             level.playSound(null, pos, SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 1.0F, 1.2F);
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -112,15 +109,14 @@ public class BarbedWireBlock extends Block {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effects, boolean intersects) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!(entity instanceof LivingEntity living)) return;
         entity.makeStuckInBlock(state, new Vec3(0.45, 0.75, 0.45));
         if (!(level instanceof ServerLevel server)) return;
         // players move on their own client, so the server's delta movement says nothing once a hit has settled it:
         // measure the step actually taken, the way sweet berry bushes do
-        Vec3 step = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
-        if (Math.abs(step.x) >= 0.003 || Math.abs(step.z) >= 0.003) {
-            living.hurtServer(server, Ambuscade.damage(server, Ambuscade.BARBED_WIRE_DAMAGE), DAMAGE);
+        if (Math.abs(entity.getX() - entity.xOld) >= 0.003 || Math.abs(entity.getZ() - entity.zOld) >= 0.003) {
+            living.hurt(Ambuscade.damage(server, Ambuscade.BARBED_WIRE_DAMAGE), DAMAGE);
         }
     }
 }

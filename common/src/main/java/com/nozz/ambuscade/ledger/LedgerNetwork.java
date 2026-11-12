@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -56,11 +56,11 @@ public final class LedgerNetwork {
     }
 
     static Ledger.Where where(GlobalPos pos) {
-        return new Ledger.Where(pos.dimension().identifier().toString(), pos.pos());
+        return new Ledger.Where(pos.dimension().location().toString(), pos.pos());
     }
 
     static GlobalPos global(Ledger.Where where) {
-        return GlobalPos.of(ResourceKey.create(Registries.DIMENSION, Identifier.parse(where.dimension())), where.pos());
+        return GlobalPos.of(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(where.dimension())), where.pos());
     }
 
     public static void init() {

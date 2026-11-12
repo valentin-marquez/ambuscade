@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.Containers;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,7 +42,7 @@ public class SentryBlock extends BaseEntityBlock {
     /** Endless ammo: fires plain arrows forever and has no magazine. */
     public static final BooleanProperty ENDLESS = BooleanProperty.create("endless");
     /** The direction it patrols when nobody is in range; it still turns all the way round to shoot. */
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);
 
     public SentryBlock(Properties properties) {
@@ -91,11 +93,11 @@ public class SentryBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (state.getValue(ENDLESS)) {
-            if (!level.isClientSide()) player.sendOverlayMessage(Component.translatable("message.ambuscade.sentry.no_magazine"));
+            if (!level.isClientSide()) player.displayClientMessage(Component.translatable("message.ambuscade.sentry.no_magazine"), true);
         } else if (!level.isClientSide() && level.getBlockEntity(pos) instanceof SentryBlockEntity sentry) {
             player.openMenu(sentry);
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -104,22 +106,22 @@ public class SentryBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction side) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (stack.is(AmbuscadeRegistry.PERIMETER_LEDGER.get())) return InteractionResult.PASS;   // let the ledger link it
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (stack.is(AmbuscadeRegistry.PERIMETER_LEDGER.get())) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;   // let the ledger link it
         if (!stack.is(AmbuscadeRegistry.UPGRADE_MODULE.get())) return super.useItemOn(stack, state, level, pos, player, hand, hit);
         SentryUpgrade module = stack.getOrDefault(AmbuscadeRegistry.UPGRADE.get(), SentryUpgrade.GOLD);
         if (module == SentryUpgrade.ENDLESS) return installEndless(stack, state, level, pos, player);
         SentryTier next = state.getValue(TIER).next();
         if (next == null || module.tier != next) {
-            if (level.isClientSide()) return InteractionResult.FAIL;
-            player.sendOverlayMessage(next == null ? Component.translatable("message.ambuscade.sentry.max")
-                    : Component.translatable("message.ambuscade.sentry.needs", Component.translatable("item.ambuscade.upgrade_module." + next.getSerializedName())));
-            return InteractionResult.FAIL;
+            if (level.isClientSide()) return ItemInteractionResult.FAIL;
+            player.displayClientMessage(next == null ? Component.translatable("message.ambuscade.sentry.max")
+                    : Component.translatable("message.ambuscade.sentry.needs", Component.translatable("item.ambuscade.upgrade_module." + next.getSerializedName())), true);
+            return ItemInteractionResult.FAIL;
         }
         if (level instanceof ServerLevel server) {
             server.setBlock(pos, state.setValue(TIER, next), Block.UPDATE_ALL);
@@ -127,13 +129,13 @@ public class SentryBlock extends BaseEntityBlock {
             server.playSound(null, pos, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             server.sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 12, 0.4, 0.4, 0.4, 0.1);
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    private static InteractionResult installEndless(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
+    private static ItemInteractionResult installEndless(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
         if (state.getValue(ENDLESS)) {
-            if (!level.isClientSide()) player.sendOverlayMessage(Component.translatable("message.ambuscade.sentry.already_endless"));
-            return InteractionResult.FAIL;
+            if (!level.isClientSide()) player.displayClientMessage(Component.translatable("message.ambuscade.sentry.already_endless"), true);
+            return ItemInteractionResult.FAIL;
         }
         if (level instanceof ServerLevel server) {
             if (server.getBlockEntity(pos) instanceof SentryBlockEntity sentry) {   // the magazine goes away: hand back what was in it
@@ -145,6 +147,6 @@ public class SentryBlock extends BaseEntityBlock {
             server.playSound(null, pos, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.7F);
             server.sendParticles(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 16, 0.4, 0.4, 0.4, 0.05);
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 }

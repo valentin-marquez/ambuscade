@@ -1,73 +1,65 @@
 package com.nozz.ambuscade.client;
 
-import com.geckolib.animatable.GeoBlockEntity;
-import com.geckolib.constant.dataticket.DataTicket;
-import com.geckolib.model.GeoModel;
-import com.geckolib.renderer.GeoBlockRenderer;
-import com.geckolib.renderer.base.BoneSnapshots;
-import com.geckolib.renderer.base.GeoRenderState;
-import com.geckolib.renderer.base.RenderPassInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.nozz.ambuscade.block.Aimed;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-import net.minecraft.resources.Identifier;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 /** Sentries and mortars: model and texture chosen by the block entity, yaw and pitch bones turned to its aim. */
-public class AimedRenderer<T extends BlockEntity & GeoBlockEntity & Aimed> extends GeoBlockRenderer<T, BlockEntityRenderState> {
-    private static final DataTicket<Identifier> MODEL = DataTicket.create("ambuscade_aimed_model", Identifier.class);
-    private static final DataTicket<Identifier> TEXTURE = DataTicket.create("ambuscade_aimed_texture", Identifier.class);
-    private static final DataTicket<Float> YAW = DataTicket.create("ambuscade_aimed_yaw", Float.class);
-    private static final DataTicket<Float> PITCH = DataTicket.create("ambuscade_aimed_pitch", Float.class);
-
+public class AimedRenderer<T extends BlockEntity & GeoBlockEntity & Aimed> extends GeoBlockRenderer<T> {
     public AimedRenderer(BlockEntityRendererProvider.Context ctx) {
-        super(ctx, new Model<>());
-    }
-
-    // BlockEntityRenderState only becomes a GeoRenderState through GeckoLib's injected interface, which the
-    // common module cannot see; hence the casts and raw RenderPassInfo below
-    @Override
-    public void addRenderData(T aimed, Void relatedObject, BlockEntityRenderState state, float partialTick) {
-        GeoRenderState geo = (GeoRenderState) state;
-        geo.addGeckolibData(MODEL, aimed.model());
-        geo.addGeckolibData(TEXTURE, aimed.texture());
-        geo.addGeckolibData(YAW, aimed.renderYaw(partialTick));
-        geo.addGeckolibData(PITCH, aimed.renderPitch(partialTick));
+        super(new Model<>());
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    protected void tryRotateByBlockstate(RenderPassInfo info, PoseStack poseStack) {
+    protected void rotateBlock(Direction facing, PoseStack poseStack) {
         // aim is computed in world space, so the base is never turned by FACING
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public void adjustModelBonesForRender(RenderPassInfo info, BoneSnapshots snapshots) {
-        float yaw = (Float) info.getOrDefaultGeckolibData(YAW, 0F) * Mth.DEG_TO_RAD;
-        float pitch = (Float) info.getOrDefaultGeckolibData(PITCH, 0F) * Mth.DEG_TO_RAD;
+    public void renderRecursively(PoseStack pose, T aimed, GeoBone bone, RenderType type, MultiBufferSource buffers, VertexConsumer buffer,
+                                  boolean isReRender, float partialTick, int light, int overlay, int colour) {
+        boolean yaw = bone.getName().equals("yaw");
+        if (!yaw && !bone.getName().equals("pitch")) {
+            super.renderRecursively(pose, aimed, bone, type, buffers, buffer, isReRender, partialTick, light, overlay, colour);
+            return;
+        }
         // the model faces north at rest, and a bone's Y rotation reads the same way as our yaw (atan2(-dx, -dz)):
-        // checked against targets on all eight compass points; "PI - yaw" only agreed with it due east and west
-        snapshots.ifPresent("yaw", bone -> bone.setRotY(bone.getRotY() + yaw));
-        snapshots.ifPresent("pitch", bone -> bone.setRotX(bone.getRotX() + pitch));
+        // checked against targets on all eight compass points; "PI - yaw" only agreed with it due east and west.
+        // Added on top of the animated pose for this draw only, then taken off again: bones are shared by every sentry
+        float turn = (yaw ? aimed.renderYaw(partialTick) : aimed.renderPitch(partialTick)) * Mth.DEG_TO_RAD;
+        if (yaw) bone.setRotY(bone.getRotY() + turn);
+        else bone.setRotX(bone.getRotX() + turn);
+        super.renderRecursively(pose, aimed, bone, type, buffers, buffer, isReRender, partialTick, light, overlay, colour);
+        if (yaw) bone.setRotY(bone.getRotY() - turn);
+        else bone.setRotX(bone.getRotX() - turn);
+        bone.resetStateChanges();   // or GeckoLib would take the bone for animated and stop easing it back after an animation
     }
 
     private static final class Model<T extends BlockEntity & GeoBlockEntity & Aimed> extends GeoModel<T> {
         @Override
-        public Identifier getModelResource(GeoRenderState state) {
-            return state.getGeckolibData(MODEL);
+        public ResourceLocation getModelResource(T aimed) {
+            return aimed.model().withPath(p -> "geo/" + p + ".geo.json");
         }
 
         @Override
-        public Identifier getTextureResource(GeoRenderState state) {
-            return state.getGeckolibData(TEXTURE);
+        public ResourceLocation getTextureResource(T aimed) {
+            return aimed.texture();
         }
 
         @Override
-        public Identifier getAnimationResource(T aimed) {
-            return aimed.animation();
+        public ResourceLocation getAnimationResource(T aimed) {
+            return aimed.animation().withPath(p -> "animations/" + p + ".animation.json");
         }
     }
 }

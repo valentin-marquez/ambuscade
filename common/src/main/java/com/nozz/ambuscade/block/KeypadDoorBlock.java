@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 /** A door that ignores redstone and hands: it opens for a few seconds when someone types its code on the keypad. */
@@ -81,7 +80,7 @@ public class KeypadDoorBlock extends DoorBlock implements EntityBlock {
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean moved) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean moved) {
     }
 
     @Override
@@ -89,7 +88,7 @@ public class KeypadDoorBlock extends DoorBlock implements EntityBlock {
         if (player instanceof ServerPlayer sp && level.getBlockEntity(lower(state, pos)) instanceof KeypadDoorBlockEntity door) {
             Keypad.open(sp, door);
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     /** Swaps a vanilla door for its locked twin in place, keeping how it hangs. Returns the lower half's position. */

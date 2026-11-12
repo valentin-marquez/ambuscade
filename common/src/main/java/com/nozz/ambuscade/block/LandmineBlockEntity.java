@@ -5,6 +5,9 @@ import com.nozz.ambuscade.ledger.LedgerLink;
 import com.nozz.ambuscade.ledger.LedgerNetwork;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,14 +19,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 public class LandmineBlockEntity extends BlockEntity implements LedgerLink {
     private static final int VENT_TICKS = 200;
     private static final double GAS_RADIUS = 3.5;
-    private static final DustParticleOptions GAS_BODY = new DustParticleOptions(0x4F7A28, 4.0F);   // thick, dark core
-    private static final DustParticleOptions GAS_EDGE = new DustParticleOptions(0x9BC94E, 2.5F);   // lighter wisps
+    private static final DustParticleOptions GAS_BODY = new DustParticleOptions(Vec3.fromRGB24(0x4F7A28).toVector3f(), 4.0F);   // thick, dark core
+    private static final DustParticleOptions GAS_EDGE = new DustParticleOptions(Vec3.fromRGB24(0x9BC94E).toVector3f(), 2.5F);   // lighter wisps
 
     private final TrapOwner owner = new TrapOwner();
     private int venting;
@@ -96,8 +97,8 @@ public class LandmineBlockEntity extends BlockEntity implements LedgerLink {
             for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(GAS_RADIUS))) {
                 if (!mine.canCatch(e)) continue;
                 e.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 1));
-                e.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 120, 0));
-                e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+                e.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 0));
+                e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
             }
         }
         if (mine.venting == 0) level.removeBlock(pos, false);
@@ -108,18 +109,18 @@ public class LandmineBlockEntity extends BlockEntity implements LedgerLink {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        owner.save(output);
-        if (venting > 0) output.putInt("venting", venting);
-        if (destination != null) output.store("destination", BlockPos.CODEC, destination);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        owner.save(tag);
+        if (venting > 0) tag.putInt("venting", venting);
+        if (destination != null) tag.put("destination", NbtUtils.writeBlockPos(destination));
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        owner.load(input);
-        venting = input.getIntOr("venting", 0);
-        destination = input.read("destination", BlockPos.CODEC).orElse(null);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        owner.load(tag);
+        venting = tag.getInt("venting");
+        destination = NbtUtils.readBlockPos(tag, "destination").orElse(null);
     }
 }

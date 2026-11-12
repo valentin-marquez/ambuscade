@@ -13,8 +13,6 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 /** A chest with a keypad. Both halves of a double chest carry the same lock, so either half alone stays locked. */
 public class LockedChestBlockEntity extends ChestBlockEntity implements KeypadHolder {
@@ -46,7 +44,7 @@ public class LockedChestBlockEntity extends ChestBlockEntity implements KeypadHo
     private Object partner() {
         BlockState state = getBlockState();
         if (level == null || state.getValue(ChestBlock.TYPE) == ChestType.SINGLE) return null;
-        return level.getBlockEntity(ChestBlock.getConnectedBlockPos(worldPosition, state));
+        return level.getBlockEntity(worldPosition.relative(ChestBlock.getConnectedDirection(state)));
     }
 
     @Override
@@ -68,14 +66,16 @@ public class LockedChestBlockEntity extends ChestBlockEntity implements KeypadHo
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        lock.save(output.child("keypad"));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        CompoundTag keypad = new CompoundTag();
+        lock.save(keypad);
+        tag.put("keypad", keypad);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        input.child("keypad").ifPresent(lock::load);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        if (tag.contains("keypad")) lock.load(tag.getCompound("keypad"));
     }
 }

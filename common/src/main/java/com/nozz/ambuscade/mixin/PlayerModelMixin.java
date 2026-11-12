@@ -1,10 +1,9 @@
 package com.nozz.ambuscade.mixin;
 
 import com.nozz.ambuscade.AmbuscadeRegistry;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,12 +14,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class PlayerModelMixin {
     private static final float REACH = -0.85F, CLOSE = -0.22F;
 
-    @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V", at = @At("TAIL"))
-    private void ambuscade$carry(AvatarRenderState state, CallbackInfo ci) {
-        if (!(state.getMainHandItemStack().is(AmbuscadeRegistry.CARRIED))) return;
-        HumanoidModel<?> model = (HumanoidModel<?>) (Object) this;
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
+    private void ambuscade$carry(LivingEntity entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch, CallbackInfo ci) {
+        if (!entity.getMainHandItem().is(AmbuscadeRegistry.CARRIED)) return;
+        PlayerModel<?> model = (PlayerModel<?>) (Object) this;
         pose(model.rightArm, -CLOSE);
         pose(model.leftArm, CLOSE);
+        // the sleeves were copied from the arms before this ran; on 1.21.1 they are not children of the arms
+        model.rightSleeve.copyFrom(model.rightArm);
+        model.leftSleeve.copyFrom(model.leftArm);
     }
 
     private static void pose(ModelPart arm, float yaw) {

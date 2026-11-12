@@ -19,6 +19,6 @@ public class CamouflageNetItem extends Item {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (!Camouflage.cover(level, pos, level.getBlockState(pos))) return InteractionResult.FAIL;
         ctx.getItemInHand().consume(1, ctx.getPlayer());
-        return InteractionResult.SUCCESS;
+        return InteractionResult.CONSUME;
     }
 }

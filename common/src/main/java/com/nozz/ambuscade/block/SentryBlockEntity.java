@@ -1,12 +1,12 @@
 package com.nozz.ambuscade.block;
 
-import com.geckolib.animatable.GeoBlockEntity;
-import com.geckolib.animatable.instance.AnimatableInstanceCache;
-import com.geckolib.animatable.manager.AnimatableManager;
-import com.geckolib.animation.AnimationController;
-import com.geckolib.animation.object.PlayState;
-import com.geckolib.animation.RawAnimation;
-import com.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import com.nozz.ambuscade.Ambuscade;
 import com.nozz.ambuscade.AmbuscadeRegistry;
 import com.nozz.ambuscade.entity.SteelBolt;
@@ -23,7 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -49,8 +49,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -314,17 +312,17 @@ public class SentryBlockEntity extends BaseContainerBlockEntity implements World
     }
 
     @Override
-    public Identifier model() {
+    public ResourceLocation model() {
         return Ambuscade.id("block/sentry_" + getBlockState().getValue(SentryBlock.TIER).getSerializedName());
     }
 
     @Override
-    public Identifier texture() {
+    public ResourceLocation texture() {
         return Ambuscade.id("textures/block/sentry_" + getBlockState().getValue(SentryBlock.TIER).getSerializedName() + ".png");
     }
 
     @Override
-    public Identifier animation() {
+    public ResourceLocation animation() {
         return Ambuscade.id("block/sentry");
     }
 
@@ -342,7 +340,7 @@ public class SentryBlockEntity extends BaseContainerBlockEntity implements World
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<SentryBlockEntity>(CONTROLLER, test -> PlayState.STOP)
+        controllers.add(new AnimationController<SentryBlockEntity>(this, CONTROLLER, test -> PlayState.STOP)
                 .triggerableAnim("alert", ALERT)
                 .triggerableAnim("fire", FIRE));
     }
@@ -353,18 +351,18 @@ public class SentryBlockEntity extends BaseContainerBlockEntity implements World
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        owner.save(output);
-        ContainerHelper.saveAllItems(output, items);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        owner.save(tag);
+        ContainerHelper.saveAllItems(tag, items, registries);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        owner.load(input);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        owner.load(tag);
         items = NonNullList.withSize(getBlockState().getValue(SentryBlock.TIER).slots, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(input, items);
-        clientTarget = input.getIntOr("target", -1);   // only present in the update packet
+        ContainerHelper.loadAllItems(tag, items, registries);
+        clientTarget = tag.contains("target") ? tag.getInt("target") : -1;   // only present in the update packet
     }
 }

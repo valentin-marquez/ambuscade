@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,13 +22,13 @@ public class PerimeterLedgerItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
         if (level instanceof ServerLevel server && player instanceof ServerPlayer sp) {
-            ItemStack stack = player.getItemInHand(hand);
             UUID id = idOf(stack, server, player);
             LedgerNetwork.open(sp, id, LedgerData.get(server).find(id));
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
     @Override
@@ -37,7 +38,7 @@ public class PerimeterLedgerItem extends Item {
         if (ctx.getLevel() instanceof ServerLevel server && player != null) {
             UUID held = ctx.getItemInHand().get(AmbuscadeRegistry.LEDGER_ID.get());
             if (!link.mayLink(player, held)) {
-                player.sendOverlayMessage(Component.translatable("message.ambuscade.ledger.not_yours"));
+                player.displayClientMessage(Component.translatable("message.ambuscade.ledger.not_yours"), true);
                 return InteractionResult.FAIL;
             }
             UUID id = idOf(ctx.getItemInHand(), server, player);
@@ -47,15 +48,15 @@ public class PerimeterLedgerItem extends Item {
             if (previous != null) previous.unlink(LedgerNetwork.where(pos));
             String block = BuiltInRegistries.BLOCK.getKey(server.getBlockState(ctx.getClickedPos()).getBlock()).toString();
             if (!data.find(id).link(LedgerNetwork.where(pos), block)) {
-                player.sendOverlayMessage(Component.translatable("message.ambuscade.ledger.full"));
+                player.displayClientMessage(Component.translatable("message.ambuscade.ledger.full"), true);
                 return InteractionResult.FAIL;
             }
             link.linkLedger(id);
             data.find(id).protect(player.getScoreboardName());   // whoever arms a trap is spared by it
             data.setDirty();
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.ledger.linked"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.ledger.linked"), true);
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(ctx.getLevel().isClientSide());
     }
 
     // a blank ledger becomes a new list owned by whoever first uses it

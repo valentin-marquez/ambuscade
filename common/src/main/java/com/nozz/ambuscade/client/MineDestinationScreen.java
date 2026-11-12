@@ -3,7 +3,7 @@ package com.nozz.ambuscade.client;
 import com.nozz.ambuscade.AmbuscadeRegistry;
 import com.nozz.ambuscade.block.MineNetwork;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -71,8 +71,8 @@ public final class MineDestinationScreen extends Screen {
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractBackground(g, mouseX, mouseY, partialTick);
+    public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.renderBackground(g, mouseX, mouseY, partialTick);
         int x = left(), y = top();
         g.fill(x - 3, y - 3, x + W + 3, y + H + 3, LEATHER_DARK);
         g.fill(x - 2, y - 2, x + W + 2, y + H + 2, LEATHER);
@@ -82,16 +82,16 @@ public final class MineDestinationScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
-        super.extractRenderState(g, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        super.render(g, mouseX, mouseY, partialTick);
         int x = left(), y = top(), inner = x + 14;
-        g.item(new ItemStack(AmbuscadeRegistry.TELEPORT_MINE.get()), inner, y + 10);
-        g.text(font, title, inner + 22, y + 14, INK, false);
-        g.text(font, Component.translatable("gui.ambuscade.mine.destination"), inner, y + 38, INK, false);
-        for (int i = 0; i < 3; i++) g.text(font, "XYZ".substring(i, i + 1), inner + 2 + i * 66, y + 58, INK, false);
+        g.renderItem(new ItemStack(AmbuscadeRegistry.TELEPORT_MINE.get()), inner, y + 10);
+        g.drawString(font, title, inner + 22, y + 14, INK, false);
+        g.drawString(font, Component.translatable("gui.ambuscade.mine.destination"), inner, y + 38, INK, false);
+        for (int i = 0; i < 3; i++) g.drawString(font, "XYZ".substring(i, i + 1), inner + 2 + i * 66, y + 58, INK, false);
         Component hint = invalid ? Component.translatable("gui.ambuscade.mine.invalid", MineNetwork.MAX_DISTANCE)
                 : Component.translatable("gui.ambuscade.mine.hint", MineNetwork.MAX_DISTANCE);
-        g.text(font, hint, x + (W - font.width(hint)) / 2, y + 78, invalid ? ERROR : INK_SOFT, false);
+        g.drawString(font, hint, x + (W - font.width(hint)) / 2, y + 78, invalid ? ERROR : INK_SOFT, false);
     }
 
     @Override

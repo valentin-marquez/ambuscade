@@ -42,10 +42,10 @@ public class TeleportMineBlock extends LandmineBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (Camouflage.tryUncover(state, level, pos, player)) return InteractionResult.SUCCESS;
+        if (Camouflage.tryUncover(state, level, pos, player)) return InteractionResult.sidedSuccess(level.isClientSide());
         if (!(level.getBlockEntity(pos) instanceof LandmineBlockEntity mine) || !mine.mayConfigure(player)) return InteractionResult.PASS;
         if (player instanceof ServerPlayer sp) MineNetwork.open(sp, pos, mine.destination() == null ? pos : mine.destination());
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

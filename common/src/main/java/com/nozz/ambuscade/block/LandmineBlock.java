@@ -2,6 +2,7 @@ package com.nozz.ambuscade.block;
 
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.InteractionHand;
 import com.nozz.ambuscade.AmbuscadeRegistry;
@@ -13,7 +14,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,8 +23,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -33,8 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -43,7 +42,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class LandmineBlock extends BaseEntityBlock {
     public static final MapCodec<LandmineBlock> CODEC = simpleCodec(LandmineBlock::new);
     public static final BooleanProperty PRESSED = BooleanProperty.create("pressed");
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 6, 13);
     private static final int FUSE_TICKS = 10;
     private static final float POWER = 3.0F;   // creeper strength; TNT is 4
@@ -86,12 +85,12 @@ public class LandmineBlock extends BaseEntityBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        return Camouflage.tryUncover(state, level, pos, player) ? InteractionResult.SUCCESS : super.useWithoutItem(state, level, pos, player, hit);
+        return Camouflage.tryUncover(state, level, pos, player) ? InteractionResult.sidedSuccess(level.isClientSide()) : super.useWithoutItem(state, level, pos, player, hit);
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (stack.is(AmbuscadeRegistry.CAMOUFLAGE_NET.get())) return InteractionResult.PASS;   // let the net cover it
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (stack.is(AmbuscadeRegistry.CAMOUFLAGE_NET.get())) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;   // let the net cover it
         return super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
 
@@ -106,8 +105,7 @@ public class LandmineBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos,
-                                     Direction dir, BlockPos neighborPos, BlockState neighbor, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction dir, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         return dir == Direction.DOWN && !canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : state;
     }
 
@@ -119,7 +117,7 @@ public class LandmineBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effects, boolean intersects) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!(level instanceof ServerLevel server) || state.getValue(PRESSED) || !(entity instanceof LivingEntity victim)) return;
         if (!entity.blockPosition().equals(pos)) return;
         if (!(level.getBlockEntity(pos) instanceof LandmineBlockEntity mine) || !mine.canCatch(victim) || !armed(mine)) return;
@@ -156,8 +154,7 @@ public class LandmineBlock extends BaseEntityBlock {
             }
         };
         level.removeBlock(pos, false);
-        // debris lifts blocks itself, so it obeys the same rule that stops TNT from breaking terrain
-        if (level.getGameRules().get(GameRules.TNT_EXPLODES)) throwDebris(level, pos, random);
+        throwDebris(level, pos, random);   // 1.21.1 has no tntExplodes rule: TNT always breaks terrain, and so does this
         Vec3 at = new Vec3(pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5);
         level.explode(null, null, spare, at, POWER, false, Level.ExplosionInteraction.TNT);
     }

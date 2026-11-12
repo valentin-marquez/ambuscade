@@ -3,7 +3,7 @@ package com.nozz.ambuscade;
 import com.nozz.ambuscade.block.MineNetwork;
 import com.nozz.ambuscade.ledger.LedgerNetwork;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,12 +24,12 @@ public final class Ambuscade {
         com.nozz.ambuscade.item.KeypadLockItem.init();
     }
 
-    public static Identifier id(String path) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public static DamageSource damage(ServerLevel level, ResourceKey<DamageType> type) {
-        return new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(type));
+        return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type));
     }
 
     private static ResourceKey<DamageType> damageType(String name) {

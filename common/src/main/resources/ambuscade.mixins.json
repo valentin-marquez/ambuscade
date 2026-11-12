@@ -3,7 +3,7 @@
   "package": "com.nozz.ambuscade.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "AvatarRendererMixin",
+    "PlayerRendererMixin",
     "ItemInHandLayerMixin",
     "PlayerModelMixin"
   ],

@@ -11,8 +11,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,13 +29,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MortarBlock extends BaseEntityBlock {
     public static final MapCodec<MortarBlock> CODEC = simpleCodec(MortarBlock::new);
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
 
@@ -81,7 +82,7 @@ public class MortarBlock extends BaseEntityBlock {
 
     /** One shell per rising edge, like a dispenser. */
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean moved) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean moved) {
         boolean powered = level.hasNeighborSignal(pos);
         if (powered == state.getValue(TRIGGERED)) return;
         level.setBlock(pos, state.setValue(TRIGGERED, powered), Block.UPDATE_CLIENTS);
@@ -89,17 +90,17 @@ public class MortarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!stack.is(AmbuscadeRegistry.FIRE_ORDER.get())) return super.useItemOn(stack, state, level, pos, player, hand, hit);
-        if (!(level.getBlockEntity(pos) instanceof MortarBlockEntity mortar)) return InteractionResult.PASS;
-        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (!(level.getBlockEntity(pos) instanceof MortarBlockEntity mortar)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        if (level.isClientSide()) return ItemInteractionResult.sidedSuccess(level.isClientSide());
         GlobalPos order = stack.get(AmbuscadeRegistry.FIRE_TARGET.get());
         if (order == null) {
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.mortar.blank_order"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.mortar.blank_order"), true);
         } else if (!mortar.mayAim(player)) {
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.ledger.not_yours"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.ledger.not_yours"), true);
         } else if (order.dimension() != level.dimension()) {
-            player.sendOverlayMessage(Component.translatable("message.ambuscade.mortar.other_dimension"));
+            player.displayClientMessage(Component.translatable("message.ambuscade.mortar.other_dimension"), true);
         } else {
             mortar.aimAt(order.pos());
             BlockPos t = order.pos();
@@ -108,10 +109,10 @@ public class MortarBlock extends BaseEntityBlock {
                 case NO_SKY -> "message.ambuscade.mortar.no_sky";
                 default -> "message.ambuscade.mortar.aimed";
             };
-            player.sendOverlayMessage(Component.translatable(key, t.getX(), t.getY(), t.getZ(), (int) Ballistics.maxRange()));
+            player.displayClientMessage(Component.translatable(key, t.getX(), t.getY(), t.getZ(), (int) Ballistics.maxRange()), true);
             level.playSound(null, pos, SoundEvents.CROSSBOW_LOADING_END.value(), SoundSource.BLOCKS, 1.0F, 0.6F);
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

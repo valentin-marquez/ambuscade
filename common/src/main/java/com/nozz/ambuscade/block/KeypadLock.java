@@ -1,11 +1,8 @@
 package com.nozz.ambuscade.block;
 
 import java.util.UUID;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 /** A keypad's owner, code and lockout. Shared by every block that carries a keypad; only the owner ever reaches clients. */
 public final class KeypadLock {
@@ -69,22 +66,22 @@ public final class KeypadLock {
 
     /** The owner only, so the client knows who may mine it; the code stays on the server. */
     void writeClient(CompoundTag tag) {
-        if (owner != null) tag.store("owner", UUIDUtil.CODEC, owner);
+        if (owner != null) tag.putUUID("owner", owner);
     }
 
-    void save(ValueOutput output) {
-        if (owner != null) output.store("owner", UUIDUtil.CODEC, owner);
-        output.putString("code", code);
-        output.putInt("failures", failures);
-        output.putInt("lockouts", lockouts);
-        output.putLong("locked_until", lockedUntil);
+    void save(CompoundTag tag) {
+        if (owner != null) tag.putUUID("owner", owner);
+        tag.putString("code", code);
+        tag.putInt("failures", failures);
+        tag.putInt("lockouts", lockouts);
+        tag.putLong("locked_until", lockedUntil);
     }
 
-    void load(ValueInput input) {
-        owner = input.read("owner", UUIDUtil.CODEC).orElse(null);
-        code = input.getStringOr("code", "");
-        failures = input.getIntOr("failures", 0);
-        lockouts = input.getIntOr("lockouts", 0);
-        lockedUntil = input.getLongOr("locked_until", 0L);
+    void load(CompoundTag tag) {
+        owner = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
+        code = tag.getString("code");
+        failures = tag.getInt("failures");
+        lockouts = tag.getInt("lockouts");
+        lockedUntil = tag.getLong("locked_until");
     }
 }

@@ -1,12 +1,12 @@
 package com.nozz.ambuscade.block;
 
-import com.geckolib.animatable.GeoBlockEntity;
-import com.geckolib.animatable.instance.AnimatableInstanceCache;
-import com.geckolib.animatable.manager.AnimatableManager;
-import com.geckolib.animation.AnimationController;
-import com.geckolib.animation.RawAnimation;
-import com.geckolib.animation.object.PlayState;
-import com.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import com.nozz.ambuscade.Ambuscade;
 import com.nozz.ambuscade.AmbuscadeRegistry;
 import com.nozz.ambuscade.entity.MortarShell;
@@ -21,7 +21,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,8 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 /** Fires one shell per redstone pulse at the spot a fire order gave it. Needs open sky, lands 6 to 32 blocks out,
@@ -175,23 +173,23 @@ public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, Le
     }
 
     @Override
-    public Identifier model() {
+    public ResourceLocation model() {
         return Ambuscade.id("block/mortar");
     }
 
     @Override
-    public Identifier texture() {
+    public ResourceLocation texture() {
         return Ambuscade.id("textures/block/mortar.png");
     }
 
     @Override
-    public Identifier animation() {
+    public ResourceLocation animation() {
         return Ambuscade.id("block/mortar");
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<MortarBlockEntity>(CONTROLLER, test -> PlayState.STOP).triggerableAnim("fire", FIRE));
+        controllers.add(new AnimationController<MortarBlockEntity>(this, CONTROLLER, test -> PlayState.STOP).triggerableAnim("fire", FIRE));
     }
 
     @Override
@@ -200,16 +198,16 @@ public class MortarBlockEntity extends BlockEntity implements GeoBlockEntity, Le
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        owner.save(output);
-        if (target != null) output.putLong("target", target.asLong());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        owner.save(tag);
+        if (target != null) tag.putLong("target", target.asLong());
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        owner.load(input);
-        target = input.getLong("target").map(BlockPos::of).orElse(null);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        owner.load(tag);
+        target = tag.contains("target") ? BlockPos.of(tag.getLong("target")) : null;
     }
 }
